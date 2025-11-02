@@ -64,7 +64,7 @@ const navigate = useNavigate()
             setLoading(false)
         }
     }
- if( Object.keys(userData).length === 0 && Object.keys(currentUserData).length === 0) return <Loader height={"full"} width={"full"}/>
+ if( !userData || Object.keys(userData).length == 0 || !currentUserData) return <Loader height={"full"} width={"full"}/>
     return (
         <div className=' md:h-[45%] flex flex-col md:justify-between items-center '>
             <ToastContainer />

@@ -10,7 +10,7 @@ const ShowAllPosts = () => {
     const fetchedOnceRef = useRef(false);
 
     useEffect(() => {
-        if (posts.length > 0) {
+        if (posts.posts.length > 0) {
             fetchedOnceRef.current = true;
         }
     }, [posts]);

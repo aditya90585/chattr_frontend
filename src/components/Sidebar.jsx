@@ -118,7 +118,7 @@ const Sidebar = () => {
                     <img className='w-[60%] ml-3 object-cover' src="/images/chattrLogo.png" alt="LOGO" />
                 </div>
 
-                <ul className={`flex md:flex-col sm:flex-col justify-evenly text-2xl gap-y-1 px-1 w-full h-full`}>
+                <ul className={`md:flex md:flex-col sm:flex-col justify-evenly text-2xl grid grid-cols-6 gap-y-1 px-1 w-full h-full`}>
                     {
                         pages.map((page) => {
                             return <li key={page.Text} onClick={page.function_name} className={` ${page.in_mobile?"flex":"md:flex sm:flex hidden"} items-center gap-3 justify-center  ${searchBarstate ? "md:w-[20%] justify-center" : "md:w-full md:justify-start"} md:h-12 hover:bg-[#F2F2F2] hover:cursor-pointer px-5 hover:rounded-xl`}>

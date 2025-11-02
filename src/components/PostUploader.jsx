@@ -82,7 +82,7 @@ export default function PostUploader({ open, onClose }) {
     if (!open) return null;
     return (
         <div
-            className="fixed inset-0 bg-black/50 flex justify-center items-center"
+            className="fixed z-50 inset-0 bg-black/50 flex justify-center items-center"
             onClick={handleClickOutside}
         >
             <div
@@ -109,7 +109,7 @@ export default function PostUploader({ open, onClose }) {
                             changepreview={(e) => setPreview(e)}
                             label={"Select From Computer"} />
                         {preview &&
-                            <div className="md:w-[40%] sm:w-[40%] w-full md:h-full sm:h-full h-[50%] mt-4" >
+                            <div className="md:w-[40%] sm:w-[40%] w-full md:h-full sm:h-full h-[40%] mt-4" >
                                 <textarea type="text"
                                     className="w-full md:h-[86%] sm:h-[86%] h-[80%] p-2 resize-none border text-base rounded"
                                     placeholder="Write caption..."
@@ -117,7 +117,7 @@ export default function PostUploader({ open, onClose }) {
                                         required: true
                                     })}
                                 />
-                                <Button type="submit" className="bg-[#254CD8] text-white flex justify-between items-center cursor-pointer text-xl w-full md:h-[12%] sm:h-[12%] h-[20%] rounded" ><span className="ml-22">Share</span><IoIosShareAlt className="mr-2" /></Button>
+                                <Button type="submit" className="bg-[#254CD8] text-white flex justify-center items-center gap-x-3 cursor-pointer text-xl w-full md:h-[12%] sm:h-[12%] h-[20%] rounded" ><span className="">Share</span><IoIosShareAlt className="" /></Button>
                             </div>
                         }
                     </form>

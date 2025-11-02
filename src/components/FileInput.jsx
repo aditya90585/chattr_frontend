@@ -22,7 +22,7 @@ const FileInput = ({
         }
     };
     return (
-        <div className={`flex ${preview ? " md:w-[60%] sm:w-[60%] w-full" : "w-full"}  h-full justify-center items-center `}>
+        <div className={`flex ${preview ? " md:w-[60%] sm:w-[60%] w-full  md:h-full sm:h-full h-[60%]" : "w-full h-full"}  justify-center items-center `}>
             {
                 (label) && <label
                     className={`  ${preview ? "hidden" : "inline-block"} text-base font-semibold p-1 cursor-pointer bg-[#4150F7] text-white rounded`}
@@ -41,7 +41,7 @@ const FileInput = ({
             />
 
             {preview && (
-                <div className="mt-4 h-full w-full md:pr-4 sm:pr-4 pr-0">
+                <div className="mt-4 md:h-full sm:h-full h-full w-full md:pr-4 sm:pr-4 pr-0">
                     <img
                         src={preview}
                         alt="preview"

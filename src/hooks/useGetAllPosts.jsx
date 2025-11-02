@@ -1,7 +1,7 @@
 import axiosInstance from '../features/axioxInstance';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { showPosts,clearPosts } from '../redux/Slices/postSlices';
+import { showPosts, clearPosts } from '../redux/Slices/postSlices';
 
 const useGetAllPosts = () => {
   const [loading, setLoading] = useState(false)
@@ -20,7 +20,7 @@ const useGetAllPosts = () => {
       const res = await axiosInstance.get(`/posts/getposts?limit=${limit}&cursor=${cursor}`)
       dispatch(showPosts(res.data.posts))
       setCursor(res.data.nextcursor)
-      
+
       if (res.data.nextcursor) {
         setHasmore(true)
       } else {
@@ -35,6 +35,7 @@ const useGetAllPosts = () => {
   }
   useEffect(() => {
     dispatch(clearPosts())
+    fetchPosts()
   }, [])
 
   useEffect(() => {
