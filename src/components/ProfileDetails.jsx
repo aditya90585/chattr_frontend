@@ -10,6 +10,7 @@ import axiosInstance from '../features/axioxInstance'
 import { ToastContainer, toast } from 'react-toastify'
 import ShowLikesFollowersFollowing from './ShowLikesFollowersFollowing'
 import { useNavigate } from 'react-router-dom'
+import Loader from './Loader2'
 
 
 const ProfileDetails = ({ userData }) => {
@@ -64,7 +65,7 @@ const navigate = useNavigate()
         }
 
     }
-
+ if(!userData && !currentUserData) return <Loader height={"full"} width={"full"}/>
     return (
         <div className=' md:h-[45%] flex flex-col md:justify-between items-center '>
             <ToastContainer />

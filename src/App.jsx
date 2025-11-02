@@ -12,29 +12,27 @@ function App({ children }) {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   useEffect(() => {
-   try {
-    setLoading(true)
-     axiosInstance.get("/user/getcurrentuser").then((res) => {
-       if (res.data.success) {
-         dispatch(LoginUser({ user: res.data.user }))
-        //  navigate("/")
-       }
-     }).catch((err)=>{
-      console.log(err)
-     })
-   } catch (error) {
-    console.log(error.response.data,"error")
+    try {
+      setLoading(true)
+      axiosInstance.get("/user/getcurrentuser").then((res) => {
+        if (res.data.success) {
+          dispatch(LoginUser({ user: res.data.user }))
+          //  navigate("/")
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    } catch (error) {
+      console.log(error.response.data, "error")
       toast.error(error?.response?.data?.message)
-   }
-   finally{
-    setLoading(false)
-   }
-
-
+    }
+    finally {
+      setLoading(false)
+    }
   }, [])
 
 
-  if (loading)  return <Loader height={"screen"} width={"screen"} />
+  if (loading) return <Loader height={"screen"} width={"screen"} />
   return (
     <div className='min-h-screen flex flex-wrap content-between'>
       <div className='w-full block'>

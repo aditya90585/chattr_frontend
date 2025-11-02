@@ -14,9 +14,6 @@ export const AuthLayout = ({ children }) => {
   const authStatus = useSelector(state => state?.auth?.status)
   const dispatch = useDispatch()
   
- 
-
-
   useEffect(() => {
    
       try {
@@ -24,7 +21,6 @@ export const AuthLayout = ({ children }) => {
            axiosInstance.get("/user/getcurrentuser").then((res) => {
              if (res.data.success) {
                dispatch(LoginUser({ user: res.data.user }))
-              //  navigate("/")
              }
            }).catch((err)=>{
             console.log(err)

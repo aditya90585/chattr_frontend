@@ -3,10 +3,13 @@ import PostBox from './PostBox'
 import { useSelector } from 'react-redux'
 import SuggestedUser from './SuggestedUser'
 import Navbar from './Navbar'
+import Loader from './Loader2'
 
 const ShowAllPosts = () => {
     const posts = useSelector(state => state.posts)
 
+    
+    if(!posts) return <Loader height={"full"} width={"full"}/>
     return (
         <div className='flex md:w-full md:pt-0 sm:pt-0 pt-10'>
             <Navbar/>
