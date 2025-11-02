@@ -9,6 +9,7 @@ import ShowPost from './ShowPost';
 import { NavLink } from 'react-router-dom';
 import ShowLikesFollowersFollowing from './ShowLikesFollowersFollowing';
 import { IoChatboxOutline } from 'react-icons/io5';
+import Loader from './Loader2';
 
 
 const PostBox = ({ post }) => {
@@ -88,7 +89,7 @@ const PostBox = ({ post }) => {
     }
 
   }
-
+ if(!post) return <Loader height={"full"} width={"full"}/>
   return (
     <div className="post md:w-[65%] w-full  my-2">
       <ToastContainer />
