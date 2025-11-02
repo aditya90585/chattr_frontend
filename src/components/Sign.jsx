@@ -8,8 +8,8 @@ import axios from 'axios'
 import axiosInstance from '../features/axioxInstance'
 import { toast, ToastContainer } from "react-toastify"
 import { login } from '../redux/Slices/authSlices'
-import Loader from './loader'
 import { useDispatch } from 'react-redux'
+import Loader from './Loader2'
 
 
 

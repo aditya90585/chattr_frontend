@@ -4,7 +4,7 @@ import ProfileDetails from './ProfileDetails'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../features/axioxInstance'
 import { toast, ToastContainer } from 'react-toastify'
-import Loader from './loader'
+import Loader from './Loader2'
 import Navbar from './Navbar'
 
 const Profile = () => {

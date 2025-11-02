@@ -9,7 +9,7 @@ import Input from './Input';
 import { ToastContainer, toast } from 'react-toastify';
 import axiosInstance from '../features/axioxInstance';
 import { useEffect } from 'react';
-import Loader from './loader';
+import Loader from './Loader2';
 import { IoIosMore } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';

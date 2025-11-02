@@ -6,7 +6,7 @@ import Button from './Button'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../features/axioxInstance'
-import Loader from './loader'
+import Loader from './Loader2'
 import { ToastContainer, toast } from 'react-toastify'
 import { login as loginUser } from '../redux/Slices/authSlices'
 

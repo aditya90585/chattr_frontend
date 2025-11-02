@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import Loader from "./loader"
+import Loader from "./Loader2"
 import { toast, ToastContainer } from "react-toastify"
 import axiosInstance from "../features/axioxInstance"
 import { useRef } from "react"

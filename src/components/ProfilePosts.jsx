@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
-import Loader from './loader'
+import Loader from './Loader2'
 import { get, set } from 'react-hook-form'
 import ShowPost from './ShowPost'
 
