@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import Button from "./Button";
 import FileInput from "./FileInput";
@@ -7,6 +7,7 @@ import { set, useForm } from "react-hook-form";
 import axiosInstance from "../features/axioxInstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import useGetAllPosts from "../hooks/useGetAllPosts";
 
 export default function PostUploader({ open, onClose }) {
     const modalRef = useRef();
@@ -109,7 +110,7 @@ export default function PostUploader({ open, onClose }) {
                             changepreview={(e) => setPreview(e)}
                             label={"Select From Computer"} />
                         {preview &&
-                            <div className="md:w-[40%] sm:w-[40%] w-full md:h-full sm:h-full h-[40%] mt-4" >
+                            <div className="md:w-[40%] sm:w-[40%] w-full md:h-full sm:h-full h-[40%]" >
                                 <textarea type="text"
                                     className="w-full md:h-[86%] sm:h-[86%] h-[80%] p-2 resize-none border text-base rounded"
                                     placeholder="Write caption..."

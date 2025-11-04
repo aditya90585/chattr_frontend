@@ -92,7 +92,6 @@ const PostBox = ({ post }) => {
  if(!post) return <Loader height={"full"} width={"full"}/>
   return (
     <div className="post md:w-[65%] w-full  my-2">
-      <ToastContainer />
       <div className='flex h-[5%] w-full  justify-between'>
         <div className='flex items-center h-full ml-2'>
           <NavLink to={`/profile/${post?.author_id?.username}/posts`} className="image w-10 h-10">

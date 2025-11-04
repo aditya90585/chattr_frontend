@@ -5,13 +5,14 @@ const Input = ({
     placeholder = "",
     className = "",
     label,
-    labelClass,
+    labelClass="",
+    parentClass="",
     ...props
 }, ref) => {
 
     const id = useId()
     return (
-        <div>
+        <div className={`${parentClass}`}>
             {
                 label && <label
                     className={`inline-block  mb-1 ${labelClass}`}

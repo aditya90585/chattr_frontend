@@ -25,7 +25,7 @@ const ShowAllPosts = () => {
                 {posts.posts?.map((post) => {
                     return <PostBox key={post._id} post={post} />
                 })}
-                <div className='loadmore h-20 w-full'></div>
+                <div className='loadmore h-20 w-full'>no more posts...</div>
             </div>
             <SuggestedUser />
         </div>

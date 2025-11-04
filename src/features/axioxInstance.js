@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL:"https://chattr-backend-m4zf.onrender.com/api/v1",
+  baseURL:import.meta.env.VITE_BACKEND_URL,
   withCredentials: true
 });
 

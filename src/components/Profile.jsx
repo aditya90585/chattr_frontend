@@ -23,7 +23,7 @@ const Profile = () => {
           setLoading(true)
 
           const response = await axiosInstance.get("/user/getprofile/" + username)
- 
+
           setuserData(response?.data?.user)
           setLoading(false)
         }
@@ -36,11 +36,11 @@ const Profile = () => {
     showuser()
   }, [username])
 
- if(loading) return <Loader height={"full"} width={"full"}/>
+  if (loading) return <Loader height={"full"} width={"full"} />
 
   return (
     <div className=' h-full  w-full mx-auto overflow-y-scroll pt-10'>
- <Navbar/>
+      <Navbar />
       <ProfileDetails userData={userData} />
     </div>
   )

@@ -41,7 +41,7 @@ const FileInput = ({
             />
 
             {preview && (
-                <div className="mt-4 md:h-full sm:h-full h-full w-full md:pr-4 sm:pr-4 pr-0">
+                <div className=" md:h-full sm:h-full h-full w-full md:pr-4 sm:pr-4 pr-0">
                     <img
                         src={preview}
                         alt="preview"

@@ -8,16 +8,16 @@ const ProfilePosts = () => {
   let userData = useOutletContext().userData
   const [showpoststate, setShowpoststate] = useState(false)
   const [currentPost, setCurrentPost] = useState({})
-  
+
   const changeCurrentPost = (post) => {
     setCurrentPost(post)
     setShowpoststate(true)
   }
   if (!userData) return <Loader height={"full"} width={"full"} />
 
+  if( userData?.posts?.length == 0 ) return <div className=' mx-auto mt-20 font-bold text-2xl'>no posts yet...</div>
   return (
-    <div className='md:w-[75%] sm:w-[75%] w-full grid grid-cols-3 gap-x-[1px] gap-y-[1px] mt-1 pb-12'>
-      {userData?.posts?.length == 0 && <div className=' mx-auto mt-10 font-bold text-2xl'>no posts yet</div>}
+    <div className='md:w-[75%] sm:w-[75%] w-full grid  grid-cols-3 gap-x-[1px] gap-y-[1px] mt-1 pb-12'>
       {userData?.posts?.map((post, index) => {
         return <div onClick={() => changeCurrentPost(post)} key={post?._id} className='w-full group md:h-80 sm:h-80 h-40 cursor-pointer grid grid-cols-1 grid-rows-1'>
 

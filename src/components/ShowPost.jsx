@@ -53,6 +53,7 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     };
 
     const likeFunction = async () => {
+        if(loading) return
         try {
             setLoading(true)
             const res = await axiosInstance.get("/posts/like/" + post?._id)
@@ -90,6 +91,7 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     } = useForm()
 
     const PostComment = async (data) => {
+        if(loading) return 
         try {
             setLoading(true)
             const res = await axiosInstance.post("/posts/comment", {
@@ -118,8 +120,6 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     return (
         <div className="fixed z-50 inset-0 bg-black/50 flex  justify-center items-center"
             onClick={handleClickOutside}>
-            <ToastContainer />
-
             <Button
                 onClick={() => (setShowpoststate(false))}
                 className="text-white fixed md:flex sm:flex hidden  right-5 top-5 hover:text-gray-200 rounded-full cursor-pointer">

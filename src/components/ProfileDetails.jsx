@@ -20,7 +20,7 @@ const ProfileDetails = ({ userData }) => {
     const [followersBoxState, setFollowersBoxState] = useState(false)
     const [followingBoxState, setFollowingBoxState] = useState(false)
 
-const navigate = useNavigate()
+    const navigate = useNavigate()
 
     const currentUserData = useSelector(state => state?.auth?.userData)
 
@@ -64,10 +64,9 @@ const navigate = useNavigate()
             setLoading(false)
         }
     }
- if( !userData || Object.keys(userData).length == 0 || !currentUserData) return <Loader height={"full"} width={"full"}/>
+    if (!userData || Object.keys(userData).length == 0 || !currentUserData) return <Loader height={"full"} width={"full"} />
     return (
         <div className=' md:h-[45%] flex flex-col md:justify-between items-center '>
-            <ToastContainer />
             <div className='flex md:h-[70%] h-[50%] gap-x-10 mt-10 mx-5 md:mx- md:mx-0'>
                 <div className='flex w-full  flex-col justify-center items-center'>
                     <img className='rounded-full aspect-square md:h-50 object-cover' src={userData?.profile_pic_url} alt="" />
@@ -91,9 +90,8 @@ const navigate = useNavigate()
             </div>
 
             {currentUserData?.username == userData?.username ?
-                <div className='md:w-[60%] sm:w-[60%] w-[96%] flex justify-around mt-5 md:mx-15'>
-                    <Button onClick={()=> navigate("/account/edit")} className='bg-[#E7EAEE] cursor-pointer w-[48%] h-12 rounded-xl font-semibold text-base'>Edit Profile</Button>
-                    <Button className='bg-[#E7EAEE] w-[48%] h-12 rounded-xl font-semibold text-base' >View Achive</Button>
+                <div className='md:w-[50%] sm:w-[50%] w-[96%] flex justify-around mt-5 md:mx-15'>
+                    <Button onClick={() => navigate("/account/edit")} className='bg-[#E7EAEE] cursor-pointer w-[100%] h-12 rounded-xl font-semibold text-base'>Edit Profile</Button>
                 </div>
                 : (!followState) ?
                     <div className='md:w-[50%] sm:w-[50%] w-[96%]  flex justify-around mt-5 md:mx-15'>
@@ -111,7 +109,7 @@ const navigate = useNavigate()
 
 
             <div className='mt-10 w-full flex'>
-                <NavLink className="w-[50%] h-10 flex flex-col justify-between items-center" to={`/profile/${userData.username}/posts`} >
+                <NavLink className={` ${(currentUserData?.username == userData?.username) ?"w-[50%]":"w-[100%]"} h-10 flex flex-col justify-between items-center`} to={`/profile/${userData.username}/posts`} >
                     {({ isActive }) => (
                         <>
                             <BiCategory
@@ -125,20 +123,22 @@ const navigate = useNavigate()
                         </>
                     )}
                 </NavLink>
-                <NavLink className="w-[50%] h-10 flex flex-col justify-between items-center" to={`/profile/${userData.username}/savedposts`} >
-                    {({ isActive }) => (
-                        <>
-                            < FaRegBookmark
-                                size={22}
-                                className={isActive ? "text-black" : "text-gray-400"}
-                            />
-                            <div
-                                className={`w-14 h-[2px] rounded-full mt-1 transition-all duration-200 ${isActive ? "bg-black opacity-100" : "bg-transparent opacity-0"
-                                    }`}
-                            />
-                        </>
-                    )}
-                </NavLink>
+                {currentUserData?.username == userData?.username &&
+                    <NavLink className="w-[50%] h-10 flex flex-col justify-between items-center" to={`/profile/${userData.username}/savedposts`} >
+                        {({ isActive }) => (
+                            <>
+                                < FaRegBookmark
+                                    size={22}
+                                    className={isActive ? "text-black" : "text-gray-400"}
+                                />
+                                <div
+                                    className={`w-14 h-[2px] rounded-full mt-1 transition-all duration-200 ${isActive ? "bg-black opacity-100" : "bg-transparent opacity-0"
+                                        }`}
+                                />
+                            </>
+                        )}
+                    </NavLink>
+                }
             </div>
 
             <Outlet context={{ userData }} />

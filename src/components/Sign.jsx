@@ -134,7 +134,7 @@ const Sign = () => {
                         <span>OR</span>
                         <span className='bg-gray-600 h-[1px] w-[40%] '></span>
                     </div>
-                    <div className='flex justify-center items-center text-sm'>Already have an account?
+                    <div className='flex justify-center items-center text-sm w-screen'>Already have an account?
                         <NavLink to="/" className=' text-[#6050F7] mx-1 cursor-pointer font-semibold'>login</NavLink>
                     </div>
 
@@ -143,7 +143,6 @@ const Sign = () => {
             <div className='w-[40%] h-screen md:flex hidden items-center justify-center '>
                 <img className={` w-full ml-8 rounded-3xl ease-out duration-600 transition `} src="/images/landingpage.png" alt="loginiImage" />
             </div>
-            <ToastContainer />
         </div>
     )
 }

@@ -20,7 +20,7 @@ const ShowLikesFollowersFollowing = ({ text, data, boxstate, setboxstate }) => {
         >
             <div
                 ref={modalRef}
-                className={`bg-white rounded-lg h-[400px] w-[400px]  shadow-lg`}
+                className={`bg-white rounded-lg h-[400px] w-[400px]  shadow-lg overflow-hidden`}
             >
                 <h1 className='font-semibold text-2xl font-serif h-[10%] flex justify-center items-center'>{text}</h1>
                 <div className='h-[1px] my-[6px] bg-black w-full'></div>

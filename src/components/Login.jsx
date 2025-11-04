@@ -107,7 +107,7 @@ const login = () => {
             <span>OR</span>
             <span className='bg-gray-600 h-[1px] w-[40%] '></span>
           </div>
-          <div className='flex justify-center items-center text-sm'>Don't have an account?
+          <div className='flex justify-center items-center text-sm w-screen'>Don't have an account?
             <NavLink to="/sign" className=' text-[#6050F7] mx-1 cursor-pointer font-semibold'>Signup</NavLink>
           </div>
 
