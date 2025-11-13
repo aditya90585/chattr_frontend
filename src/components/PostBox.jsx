@@ -10,18 +10,22 @@ import { NavLink } from 'react-router-dom';
 import ShowLikesFollowersFollowing from './ShowLikesFollowersFollowing';
 import { IoChatboxOutline } from 'react-icons/io5';
 import Loader from './Loader2';
+import PostOptions from './PostOptions';
 
 
 const PostBox = ({ post }) => {
   const [likestate, setLikestate] = useState(false)
-  const userData = useSelector(state => state?.auth?.userData)
+  const userData = useSelector(state => state.auth.userData)
+  const authStatus = useSelector(state => state.auth.status)
   const [loading, setLoading] = useState(false)
   const [likes, setLikes] = useState([])
   const [likeboxstate, setLikeboxstate] = useState(false)
+  const [openPostOptions, setOpenPostOptions] = useState(false)
 
   useEffect(() => {
     for (let index = 0; index < post?.like?.length; index++) {
       if (post?.like[index]?._id == userData?._id) {
+        
         setLikestate(true)
         break
       }
@@ -29,11 +33,11 @@ const PostBox = ({ post }) => {
         setLikestate(false)
       }
     }
-  }, [post])
+  }, [post?.like,userData,authStatus])
 
   useEffect(() => {
     setLikes(post?.like)
-  }, [post?.like])
+  }, [post?.like,userData,authStatus])
 
   const [showpoststate, setShowpoststate] = useState(false)
   const [currentPost, setCurrentPost] = useState({})
@@ -46,7 +50,7 @@ const PostBox = ({ post }) => {
   const likeFunction = async () => {
     try {
       setLoading(true)
-      const res = await axiosInstance.get("/posts/like/" + post?._id)
+      const res = await axiosInstance.get("/api/v1/posts/like/" + post?._id)
       if (res?.data?.success) {
         if (likestate) {
           const newPostLikeData = likes.filter((userdata) => {
@@ -73,7 +77,7 @@ const PostBox = ({ post }) => {
   const deletePost = async () => {
     try {
       setLoading(true)
-      const res = await axiosInstance.get("/posts/delete/" + post?._id)
+      const res = await axiosInstance.get("/ap1/v1/posts/delete/" + post?._id)
       if (res?.data?.success) {
         toast.success("post deleted successfully...")
       } else {
@@ -87,9 +91,9 @@ const PostBox = ({ post }) => {
     finally {
       setLoading(false)
     }
-
   }
- if(!post) return <Loader height={"full"} width={"full"}/>
+  if (!post) return <Loader height={"full"} width={"full"} />
+  if(loading) return <Loader height={"full"} width={"full"} />
   return (
     <div className="post md:w-[65%] w-full  my-2">
       <div className='flex h-[5%] w-full  justify-between'>
@@ -104,9 +108,10 @@ const PostBox = ({ post }) => {
           </NavLink>
         </div>
 
-        <div onClick={deletePost} className=' flex items-center'>
+        <div onClick={()=>setOpenPostOptions(true)} className=' flex items-center cursor-pointer'>
           <CgMoreO className='h-full size-5' />
         </div>
+        <PostOptions parent={"postbox"} post={post} openPostOptions={openPostOptions} setOpenPostOptions={setOpenPostOptions}/>
       </div>
 
       <div className="postimg w-full h-[80vh] border rounded-xl mt-2 bg-gray-800">
@@ -124,7 +129,7 @@ const PostBox = ({ post }) => {
 
           </div>
           <div onClick={() => changeCurrentPost(post)} className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
-           <IoChatboxOutline className='size-7 text-black'/>
+            <IoChatboxOutline className='size-7 text-black' />
           </div>
           <div className="icon flex items-center justify-center text-black hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
             <LuSend className='text-xl' />

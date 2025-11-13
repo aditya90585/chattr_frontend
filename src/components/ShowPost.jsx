@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import ShowLikesFollowersFollowing from './ShowLikesFollowersFollowing';
 import Commentbox from './Commentbox';
+import PostOptions from './PostOptions';
 
 
 const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
@@ -24,6 +25,8 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     const [comments, setcomments] = useState([])
     const [likes, setLikes] = useState([])
     const [likeboxstate, setLikeboxstate] = useState(false)
+
+    const [openPostOptions, setOpenPostOptions] = useState(false)
 
     useEffect(() => {
         for (let index = 0; index < post?.like?.length; index++) {
@@ -53,10 +56,10 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     };
 
     const likeFunction = async () => {
-        if(loading) return
+        if (loading) return
         try {
             setLoading(true)
-            const res = await axiosInstance.get("/posts/like/" + post?._id)
+            const res = await axiosInstance.get("/api/v1/posts/like/" + post?._id)
             if (res?.data?.success) {
                 if (likestate) {
                     const newPostLikeData = likes.filter((userdata) => {
@@ -91,10 +94,10 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     } = useForm()
 
     const PostComment = async (data) => {
-        if(loading) return 
+        if (loading) return
         try {
             setLoading(true)
-            const res = await axiosInstance.post("/posts/comment", {
+            const res = await axiosInstance.post("/api/v1/posts/comment", {
                 data,
                 post_id: post?._id
             })
@@ -147,8 +150,9 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
                             {post?.author_id?.username}
                         </div>
                     </NavLink>
-                    <div className='h-full flex items-center mr-6'>
+                    <div onClick={() => setOpenPostOptions(true)} className='h-full cursor-pointer flex items-center mr-6'>
                         <CgMoreO className='size-6 cursor-pointer' />
+
                     </div>
                 </div>
 
@@ -168,7 +172,7 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
                                 {post?.author_id?.username}
                             </div>
                         </NavLink>
-                        <div className='h-full flex items-center mr-6'>
+                        <div onClick={() => setOpenPostOptions(true)} className='h-full cursor-pointer flex items-center mr-6'>
                             <CgMoreO className='size-6 cursor-pointer' />
                         </div>
                     </div>
@@ -176,7 +180,7 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
                     <div className=' w-full md:h-[67%] sm:h-[67%] h-[65%]  flex flex-col overflow-y-scroll overflow-x-hidden  gap-x-1 gap-y-2 px-3'>
                         {post?.caption && <div className='flex items-center w-full cursor-default rounded-xl p-2'>
                             <NavLink to={`/profile/${post?.author_id?.username}/posts`} className='h-full w-[10%] flex items-start'>
-                                <img className='aspect-square cursor-pointer w-8 h-8 rounded-full' src={post?.author_id?.profile_pic_url} alt="profile_pic" />
+                                <img className='aspect-square object-cover cursor-pointer w-8 h-8 rounded-full' src={post?.author_id?.profile_pic_url} alt="profile_pic" />
                             </NavLink>
                             <div className=' w-[90%] h-fit flex  flex-col  justify-center'>
                                 <NavLink to={`/profile/${post?.author_id?.username}/posts`} className='text-black cursor-pointer font-semibold'>{post?.author_id?.username}</NavLink>
@@ -229,7 +233,7 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
                     </div>
                 </div>
             </div>
-
+            <PostOptions parent={"showpost"} post={post} openPostOptions={openPostOptions} setOpenPostOptions={setOpenPostOptions} />
         </div>
     )
 }

@@ -17,7 +17,7 @@ const Searchbar = ({ searchBarstate, setSearchBarstate }) => {
 
                 if (search.length > 0) {
                     setLoading(true)
-                    const response = await axiosInstance.get("/user/search" + "?search=" + search)
+                    const response = await axiosInstance.get("/api/v1/user/search" + "?search=" + search)
                     setUsers(response.data.data)
                     setLoading(false)
                 }

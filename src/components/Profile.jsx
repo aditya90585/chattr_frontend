@@ -14,15 +14,13 @@ const Profile = () => {
   const [loading, setLoading] = useState(false)
   const [users, setUsers] = useState([])
 
-
-
   useEffect(() => {
     async function showuser() {
       try {
         if (username != "undefined") {
           setLoading(true)
 
-          const response = await axiosInstance.get("/user/getprofile/" + username)
+          const response = await axiosInstance.get("/api/v1/user/getprofile/" + username)
 
           setuserData(response?.data?.user)
           setLoading(false)

@@ -4,7 +4,7 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider, useNavigate } fr
 import { useEffect, useState } from 'react'
 import axiosInstance from './features/axioxInstance'
 import { useDispatch } from 'react-redux'
-import { login as LoginUser } from './redux/Slices/authSlices'
+import { login as LoginUser, logout } from './redux/Slices/authSlices'
 import Loader from './components/Loader2'
 
 function App({ children }) {
@@ -14,17 +14,21 @@ function App({ children }) {
   useEffect(() => {
     try {
       setLoading(true)
-      axiosInstance.get("/user/getcurrentuser").then((res) => {
+      axiosInstance.get("/api/v1/user/getcurrentuser").then((res) => {
         if (res.data.success) {
           dispatch(LoginUser({ user: res.data.user }))
           //  navigate("/")
+        } else {
+          dispatch(logout())
         }
       }).catch((err) => {
         console.log(err)
+        dispatch(logout())
       })
     } catch (error) {
       console.log(error.response.data, "error")
       toast.error(error?.response?.data?.message)
+       dispatch(logout())
     }
     finally {
       setLoading(false)

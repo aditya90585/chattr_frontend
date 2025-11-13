@@ -42,7 +42,7 @@ const ProfileDetails = ({ userData }) => {
     const followUnfollow = async () => {
         try {
             setLoading(true)
-            const res = await axiosInstance.get("/user/followunfollow/" + userData?._id)
+            const res = await axiosInstance.get("/api/v1/user/followunfollow/" + userData?._id)
             if (res?.data?.success) {
                 if (followState) {
                     const newfollowersData = followers.filter((userdata) => {
@@ -63,6 +63,11 @@ const ProfileDetails = ({ userData }) => {
         finally {
             setLoading(false)
         }
+    }
+
+
+    const chatFunction = ()=>{
+        navigate(`/chat/messages/user/${userData._id}`)
     }
     if (!userData || Object.keys(userData).length == 0 || !currentUserData) return <Loader height={"full"} width={"full"} />
     return (
@@ -101,7 +106,7 @@ const ProfileDetails = ({ userData }) => {
                     : <div className='md:w-[60%] sm:w-[60%] w-[96%]  flex justify-around mt-5 md:mx-15'>
                         <Button onClick={followUnfollow} className='bg-[#E7EAEE] cursor-pointer w-[48%] h-12 rounded-xl font-semibold text-base'>
                             Following</Button>
-                        <Button className='bg-[#E7EAEE] cursor-pointer w-[48%] h-12 rounded-xl font-semibold text-base' >
+                        <Button onClick={chatFunction} className='bg-[#E7EAEE] cursor-pointer w-[48%] h-12 rounded-xl font-semibold text-base' >
                             Message</Button>
                     </div>
             }

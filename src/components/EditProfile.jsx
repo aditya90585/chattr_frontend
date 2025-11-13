@@ -65,7 +65,7 @@ const EditProfile = () => {
             const formData = new FormData();
             formData.append("profileImage", data.image[0])
 
-            const res = await axiosInstance.post("/user/changeprofilepic", formData, {
+            const res = await axiosInstance.post("/api/v1/user/changeprofilepic", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
@@ -108,7 +108,7 @@ const EditProfile = () => {
             setLoading(true)
             toastId = toast.loading("Updating profile details...");
 
-            const res = await axiosInstance.post("/user/editprofile", { data })
+            const res = await axiosInstance.post("/api/v1/user/editprofile", { data })
             if (res.data.success) {
                 toast.update(toastId, {
                     render: res?.data?.message || "profile details  changed successfully",

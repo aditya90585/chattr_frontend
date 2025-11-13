@@ -17,7 +17,7 @@ const useGetAllPosts = () => {
     if (loading || !hasmore) return
     setLoading(true)
     try {
-      const res = await axiosInstance.get(`/posts/getposts?limit=${limit}&cursor=${cursor}`)
+      const res = await axiosInstance.get(`/api/v1/posts/getposts?limit=${limit}&cursor=${cursor}`)
       dispatch(showPosts(res?.data?.posts))
       setCursor(res?.data?.nextcursor)
 

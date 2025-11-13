@@ -52,7 +52,7 @@ export default function PostUploader({ open, onClose }) {
             formData.append("post-image", data.image[0])
 
             closeAll()
-            const res = await axiosInstance.post("/posts/createpost", formData, {
+            const res = await axiosInstance.post("/api/v1/posts/createpost", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }

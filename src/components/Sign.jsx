@@ -31,7 +31,7 @@ const Sign = () => {
     const Signupform = async (data) => {
         try {
             setLoading(true)
-            const res = await axiosInstance.post("/user/register", {
+            const res = await axiosInstance.post("/api/v1/user/register", {
                 data
             })
             dispatch(login({ user: res.data.user }))

@@ -6,7 +6,7 @@ const Commentbox = ({ comment }) => {
     return (
         <div key={comment?._id} className='flex items-center  w-full cursor-default'>
             <NavLink to={`/profile/${comment?.author?.username}/posts`} className='h-full w-[10%] flex items-start'>
-                <img className='aspect-square cursor-pointer w-8 h-8 rounded-full' src={comment?.author?.profile_pic_url} alt="profile_pic" />
+                <img className='aspect-square object-cover cursor-pointer w-8 h-8 rounded-full' src={comment?.author?.profile_pic_url} alt="profile_pic" />
             </NavLink>
             <div className=' w-[85%] h-fit flex  flex-col  justify-center'>
                 <NavLink to={`/profile/${comment?.author?.username}/posts`} className='text-black cursor-pointer font-semibold'>{comment?.author?.username}</NavLink>

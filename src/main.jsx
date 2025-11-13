@@ -17,6 +17,8 @@ import Profile from './components/Profile.jsx'
 import ProfilePosts from './components/ProfilePosts.jsx'
 import SavedPosts from './components/SavedPosts.jsx'
 import EditProfile from './components/EditProfile.jsx'
+import Messages from './components/Messages.jsx'
+import Chatbox from './components/Chatbox.jsx'
 
 const router = createBrowserRouter([
   {
@@ -59,10 +61,21 @@ const router = createBrowserRouter([
           },
           {
             path: "account/edit",
-            element: <EditProfile />
-          }
+            element: (<AuthLayout> <EditProfile /></AuthLayout>)
+          },
+          
         ]
       },
+      {
+            path: "chat/messages",
+            element: (<AuthLayout><Messages /></AuthLayout>),
+            children:[
+              {
+                path:"user/:userId",
+                element:(<Chatbox/>)
+              }
+            ]
+          },
     ]
   }
 

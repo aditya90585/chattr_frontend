@@ -28,7 +28,7 @@ const login = () => {
   
     try {
       setLoading(true)
-      const res = await axiosInstance.post("/user/login", {
+      const res = await axiosInstance.post("/api/v1/user/login", {
         data
       })
       if (res?.data?.success) {
