@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import MessageBar from './MessageBar';
 
-const Sidebar = ({messageBarstate,setMessageBarstate}) => {
+const Sidebar = ({ messageBarstate, setMessageBarstate }) => {
     const [searchBarstate, setSearchBarstate] = useState(false)
     const [createSelectorState, setCreateSelectorState] = useState(false)
     const [open, setOpen] = useState(false);
@@ -43,9 +43,6 @@ const Sidebar = ({messageBarstate,setMessageBarstate}) => {
     const profileFunction = () => {
         setMessageBarstate(false)
         navigate(`/profile/${currentUserData?.username}/posts`)
-    }
-    const reelsFunction = () => {
-        setMessageBarstate(false)
     }
     const messageFunction = () => {
         setSearchBarstate(false)
@@ -78,12 +75,6 @@ const Sidebar = ({messageBarstate,setMessageBarstate}) => {
             "logo": <MdOutlineExplore />,
             "Text": "Explore",
             "function_name": exploreFunction,
-            "in_mobile": true
-        },
-        {
-            "logo": <FaPlayCircle />,
-            "Text": "Reels",
-            "function_name": reelsFunction,
             "in_mobile": true
         },
         {
@@ -127,7 +118,7 @@ const Sidebar = ({messageBarstate,setMessageBarstate}) => {
                     <img className='w-[60%] ml-3 object-cover' src="/images/chattrLogo.png" alt="LOGO" />
                 </div>
 
-                <ul className={`md:flex md:flex-col sm:flex-col justify-evenly text-2xl grid grid-cols-6 gap-y-1 px-1 w-full h-full`}>
+                <ul className={`md:flex md:flex-col sm:flex-col justify-evenly text-2xl grid grid-cols-5 gap-y-1 px-1 w-full h-full`}>
                     {
                         pages.map((page) => {
                             return <li key={page.Text} onClick={page.function_name} className={` ${page.in_mobile ? "flex" : "md:flex sm:flex hidden"} items-center gap-3 justify-center ${searchBarstate || messageBarstate ? messageBarstate ? "justify-center md:w-full" : "md:w-[20%] justify-center" : "md:w-full md:justify-start px-5"}  md:h-12 hover:bg-[#F2F2F2] hover:cursor-pointer hover:rounded-xl`}>

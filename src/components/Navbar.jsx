@@ -15,7 +15,7 @@ const Navbar = () => {
         <div className="links flex gap-x-1 h-full justify-between items-center w-[15%] mr-2 p-1">
 
           <NavLink className={"h-full w-[50%]"} to="/"><IoIosHeartEmpty className='h-full  w-full '/></NavLink>
-          <NavLink className={"h-full w-[50%]"} to="/"><IoChatbubbleOutline className='h-full  w-full'/></NavLink>
+          <NavLink className={"h-full w-[50%]"} to="/chat/messages"><IoChatbubbleOutline className='h-full  w-full'/></NavLink>
         </div>
       </nav>
     </div>

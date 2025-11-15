@@ -38,7 +38,6 @@ const Profile = () => {
 
   return (
     <div className=' h-full  w-full mx-auto overflow-y-scroll pt-10'>
-      <Navbar />
       <ProfileDetails userData={userData} />
     </div>
   )

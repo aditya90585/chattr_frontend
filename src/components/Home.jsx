@@ -12,6 +12,7 @@ const Home = () => {
   useGetAllPosts()
   return (
     <div className='' >
+      <Navbar/>
       <div className="flex md:flex-row sm:flex-row flex-col-reverse w-full">
         <Sidebar messageBarstate={messageBarstate} setMessageBarstate={setMessageBarstate} />
         <div className="second h-screen md:w-[80%] w-full sm:border-x-[1px] md:border-x-[1px] border-x-gray-600">

@@ -19,6 +19,7 @@ import SavedPosts from './components/SavedPosts.jsx'
 import EditProfile from './components/EditProfile.jsx'
 import Messages from './components/Messages.jsx'
 import Chatbox from './components/Chatbox.jsx'
+import MessageBar from './components/MessageBar.jsx'
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
             path: "chat/messages",
             element: (<AuthLayout><Messages /></AuthLayout>),
             children:[
+              {
+                path:"",
+                element:(<MessageBar inMobile={true} />)
+              },
               {
                 path:"user/:userId",
                 element:(<Chatbox/>)

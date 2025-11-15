@@ -23,7 +23,6 @@ const Messages = () => {
         <div className='w-full  flex justify-end'>
             <Sidebar messageBarstate={messageBarstate} setMessageBarstate={setMessageBarstate} />
             <div className='sm:w-[95%] md:w-[95%] w-[100%] flex'>
-                <MessageBar />
                 <Outlet/>
             </div>
             
