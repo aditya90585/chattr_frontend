@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { socket } from '../socket/socket'
 import { toast } from 'react-toastify'
@@ -16,6 +16,14 @@ import { IoIosArrowBack } from 'react-icons/io'
 const Chatbox = () => {
     const params = useParams()
     const navigate = useNavigate()
+    const messagesRef = useRef(null)
+    const bottomRef = useRef(null);
+
+    const scrollToBottom = () => {
+    if (bottomRef.current) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
     const { register, handleSubmit, reset } = useForm()
 
@@ -25,6 +33,12 @@ const Chatbox = () => {
     const [userInfo, setUserInfo] = useState(null)
     const [conversation_id, setConversation_id] = useState("")
     const [messages, setMessages] = useState([])
+
+     useLayoutEffect(() => {
+    if (!messages || messages.length === 0) return;
+
+    bottomRef.current?.scrollIntoView({ behavior: "auto" });
+}, [messages]);
 
     useEffect(() => {
         socket.emit("direct:join", { peerId: params?.userId })
@@ -47,6 +61,7 @@ const Chatbox = () => {
                         toast.error("could not find conversation or messages")
                     }
                     setMessages(res?.data?.conversation.messages)
+                     scrollToBottom()
                 }
                 getMessageRes()
 
@@ -61,6 +76,7 @@ const Chatbox = () => {
     }, [conversation_id, params?.userId])
 
     useEffect(() => {
+        
         async function showuser() {
             try {
                 if (params?.userId) {
@@ -89,8 +105,8 @@ const Chatbox = () => {
     useEffect(() => {
 
         const handleMessage = (data) => {
-            console.log(data.message)
             setMessages((prev) => [...prev, data.message])
+            scrollToBottom()
         }
 
         socket.on("message", handleMessage)
@@ -107,14 +123,14 @@ const Chatbox = () => {
             <div className='md:w-[70%] sm:w-[70%] w-[100%] h-screen md:pb-0 sm:pb-0 pb-12 '>
                 <div className=' w-[100%]  md:h-[10%] sm:h-[10%] h-[6%]  sticky bg-white top-0 border-b border-gray-400  flex justify-between'>
                     <div to={`/profile/${userInfo?.username}/posts`} className='h-full  cursor-pointer md:ml-5 sm:ml-5 ml-0 flex items-center'>
-                           <Button
-                        onClick={() => navigate("/chat/messages")}
-                        className="text-black  right-5 top-5 md:hidden sm:hidden block hover:text-gray-200 mr-1 rounded-full cursor-pointer"
-                    >
-                        <IoIosArrowBack className='size-8' />
-                    </Button>
-                        <img onClick={()=> navigate(`/profile/${userInfo?.username}/posts`)} className='aspect-square h-[70%] object-cover rounded-full' src={userInfo?.profile_pic_url} alt="profile_pic" />
-                        <div onClick={()=> navigate(`/profile/${userInfo?.username}/posts`)} className='ml-2'>
+                        <Button
+                            onClick={() => navigate("/chat/messages")}
+                            className="text-black  right-5 top-5 md:hidden sm:hidden block hover:text-gray-200 mr-1 rounded-full cursor-pointer"
+                        >
+                            <IoIosArrowBack className='size-8' />
+                        </Button>
+                        <img onClick={() => navigate(`/profile/${userInfo?.username}/posts`)} className='aspect-square h-[70%] object-cover rounded-full' src={userInfo?.profile_pic_url} alt="profile_pic" />
+                        <div onClick={() => navigate(`/profile/${userInfo?.username}/posts`)} className='ml-2'>
                             {userInfo?.username}
                         </div>
                     </div>
@@ -122,14 +138,14 @@ const Chatbox = () => {
                         <CgMoreO className='size-6 cursor-pointer' />
                     </div>
                 </div>
-                <div className='md:h-[85%] sm:h-[85%] h-[88%] w-[100%] -z-20 overflow-y-scroll overflow-x-hidden'>
+                <div ref={messagesRef} className='md:h-[85%] pb-1  sm:h-[85%] h-[88%] w-[100%] -z-20 overflow-y-scroll overflow-x-hidden'>
                     <div className='h-[40%] pt-15 w-full flex flex-col justify-center items-center'>
                         <img className='aspect-square h-[50%] object-cover rounded-full' src={userInfo?.profile_pic_url} alt="profile_pic" />
                         <div className='font-bold text-xl my-1'>{userInfo?.username}</div>
                         <div className='text-sm my-1'>{userInfo?.fullname}</div>
                         <NavLink to={`/profile/${userInfo?.username}/posts`} className=' px-2 py-1 rounded text-gray-800 hover:text-gray-400 font-semibold font-mono border'>View Profile</NavLink>
                     </div>
-                    <ul className='h-[60%] gap-y-2 px-6 flex flex-col mt-5   text-white'>
+                    <ul className=' gap-y-2 px-6 flex flex-col mt-5   text-white'>
                         {messages?.map((message) => {
                             if (message?.sender == currentuserData?._id) {
                                 return <li key={message?._id} className='flex h-fit justify-end'>
@@ -148,7 +164,9 @@ const Chatbox = () => {
 
                         })}
                     </ul>
+                <div ref={bottomRef} ></div>
                 </div>
+                
 
                 <div className=' w-[100%] sm:h-[5%] md:h-[5%] h-[6%] border-[1px] border-gray-400'>
                     <form className='flex  h-full' onSubmit={handleSubmit(sendMessage)}>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Button from './Button'
 import ProfilePosts from './ProfilePosts'
 import SavedPosts from './SavedPosts'
@@ -11,6 +11,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import ShowLikesFollowersFollowing from './ShowLikesFollowersFollowing'
 import { useNavigate } from 'react-router-dom'
 import Loader from './Loader2'
+import { TbLogout2 } from 'react-icons/tb'
+import { logout } from '../redux/Slices/authSlices'
 
 
 const ProfileDetails = ({ userData }) => {
@@ -21,6 +23,7 @@ const ProfileDetails = ({ userData }) => {
     const [followingBoxState, setFollowingBoxState] = useState(false)
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const currentUserData = useSelector(state => state?.auth?.userData)
 
@@ -65,6 +68,25 @@ const ProfileDetails = ({ userData }) => {
         }
     }
 
+    const LogoutFunction = async () => {
+            setLoading(true)
+            try {
+                const res = await axiosInstance.get("/api/v1/user/logout")
+                if (res?.data?.success) {
+                    dispatch(logout())
+                    navigate("/login")
+                    toast.warn("logout successfully...")
+                }
+            } catch (error) {
+                console.log(error?.message, "logout error")
+                toast.error(error?.response?.data?.message || "logout failed")
+            }
+            finally {
+                setLoading(false)
+            }
+    
+        }
+
 
     const chatFunction = ()=>{
         navigate(`/chat/messages/user/${userData._id}`)
@@ -96,7 +118,9 @@ const ProfileDetails = ({ userData }) => {
 
             {currentUserData?.username == userData?.username ?
                 <div className='md:w-[50%] sm:w-[50%] w-[96%] flex justify-around mt-5 md:mx-15'>
-                    <Button onClick={() => navigate("/account/edit")} className='bg-[#E7EAEE] cursor-pointer w-[100%] h-12 rounded-xl font-semibold text-base'>Edit Profile</Button>
+                    <Button onClick={() => navigate("/account/edit")} className='bg-[#E7EAEE] cursor-pointer w-[48%] h-12 rounded-xl font-semibold text-base'>Edit Profile</Button>
+               <Button onClick={ LogoutFunction} className='bg-[#fad3d3] cursor-pointer w-[48%] h-12 rounded-xl font-semibold text-base flex justify-center items-center'> <TbLogout2 className='h-full mr-2 size-6'/>Logout</Button>
+             
                 </div>
                 : (!followState) ?
                     <div className='md:w-[50%] sm:w-[50%] w-[96%]  flex justify-around mt-5 md:mx-15'>

@@ -138,7 +138,7 @@ const EditProfile = () => {
 
 
     return (
-        <div className='flex items-center justify-center h-full w-full'>
+        <div className='flex items-center justify-center h-full w-full md:pt-0 sm:pt-0 pt-10'>
             <div className='md:h-[80%] md:w-[60%] sm:h-[80%] sm:w-[60%] h-full w-full'>
                 <h1 className='w-full font-bold text-2xl h-[6%] md:hidden sm:hidden flex border-b-[1px]'>
                     <Button

@@ -17,6 +17,7 @@ const MessageBar = ({ inMobile }) => {
                 const res = await axiosInstance.get("/api/v1/chat/prevchats")
                 if (res?.data?.success) {
                     setUsers(res?.data?.data)
+                    setLoading(false)
                 }
             }
             getprevious_chats()

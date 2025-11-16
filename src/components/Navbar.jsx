@@ -12,10 +12,8 @@ const Navbar = () => {
         <div className='flex items-center justify-start w-[30%] px-2'>
           <img className='ml-1 object-cover' src="/images/chattrLogo.png" alt="LOGO" />
         </div>
-        <div className="links flex gap-x-1 h-full justify-between items-center w-[15%] mr-2 p-1">
-
-          <NavLink className={"h-full w-[50%]"} to="/"><IoIosHeartEmpty className='h-full  w-full '/></NavLink>
-          <NavLink className={"h-full w-[50%]"} to="/chat/messages"><IoChatbubbleOutline className='h-full  w-full'/></NavLink>
+        <div className="links flex gap-x-1 h-full justify-between items-center w-[15%] mr-1 p-2">
+    <NavLink className={"h-full w-[100%]"} to="/chat/messages"><IoChatbubbleOutline className='h-full  w-full'/></NavLink>
         </div>
       </nav>
     </div>

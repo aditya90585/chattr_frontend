@@ -34,8 +34,8 @@ const useGetAllPosts = () => {
     }
   }
   useEffect(() => {
+    dispatch(clearPosts())
     if (posts.posts.length == 0) {
-      dispatch(clearPosts())
       fetchPosts()
     }
   }, [])
