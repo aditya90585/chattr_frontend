@@ -40,7 +40,7 @@ const MessageBar = ({ inMobile }) => {
             <div className='font-semibold ml-5 mb-3 font-mono text-base'>
                 Messages
             </div>
-            {users?.length == 0 && <div className='mx-auto w-fit text-xl text-[#646464] '>no previous chats found</div>}
+            {(users?.length == 0 || loading) && <div className='mx-auto w-fit text-xl text-[#646464] '>no previous chats found or loading...</div>}
            <div className='overflow-y-scroll'>
             {users?.map((user) => {
                 return <MessageSearchResult key={user[0]?._id} user={user[0]} />

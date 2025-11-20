@@ -26,8 +26,6 @@ const Sidebar = ({ messageBarstate, setMessageBarstate }) => {
     const authStatus = useSelector(state => state.auth.status)
     const currentUserData = useSelector(state => state.auth.userData)
     const [loading, setLoading] = useState(false)
-    console.log(currentUserData)
-
 
     const homeFunction = () => {
         setMessageBarstate(false)

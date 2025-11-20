@@ -11,10 +11,12 @@ import ShowLikesFollowersFollowing from './ShowLikesFollowersFollowing';
 import { IoChatboxOutline } from 'react-icons/io5';
 import Loader from './Loader2';
 import PostOptions from './PostOptions';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa6';
 
 
 const PostBox = ({ post }) => {
   const [likestate, setLikestate] = useState(false)
+  const [savepoststate, setSavepoststate] = useState(false)
   const userData = useSelector(state => state.auth.userData)
   const authStatus = useSelector(state => state.auth.status)
   const [loading, setLoading] = useState(false)
@@ -25,7 +27,7 @@ const PostBox = ({ post }) => {
   useEffect(() => {
     for (let index = 0; index < post?.like?.length; index++) {
       if (post?.like[index]?._id == userData?._id) {
-        
+
         setLikestate(true)
         break
       }
@@ -33,11 +35,21 @@ const PostBox = ({ post }) => {
         setLikestate(false)
       }
     }
-  }, [post?.like,userData,authStatus])
+  }, [post?.like, userData, authStatus])
 
   useEffect(() => {
     setLikes(post?.like)
-  }, [post?.like,userData,authStatus])
+  }, [post?.like, userData, authStatus])
+
+  useEffect(() => {
+    if (userData?.save_posts?.indexOf(post?._id) == -1) {
+      setSavepoststate(false)
+    }
+    else {
+      setSavepoststate(true)
+    }
+  }, [userData, authStatus, post])
+
 
   const [showpoststate, setShowpoststate] = useState(false)
   const [currentPost, setCurrentPost] = useState({})
@@ -74,26 +86,39 @@ const PostBox = ({ post }) => {
     }
   }
 
-  const deletePost = async () => {
+  const Save_post = async () => {
+    if (loading) return
+    let toastId
+    setLoading(true)
     try {
-      setLoading(true)
-      const res = await axiosInstance.get("/ap1/v1/posts/delete/" + post?._id)
+      toastId = toast.loading("saving post...");
+      const res = await axiosInstance.get("/api/v1/posts/savepost/" + post?._id)
       if (res?.data?.success) {
-        toast.success("post deleted successfully...")
-      } else {
-        toast.error("some error occured")
+        setSavepoststate(!savepoststate)
+        toast.update(toastId, {
+          render: res?.data?.message || "Post saved successfully",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error)
-      toast.error(error?.response?.data?.message || "some error occured while deleting post")
+      toast.update(toastId, {
+        render: error?.response?.data?.message || "Some error occured Please try again",
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
     }
     finally {
       setLoading(false)
     }
   }
+
+
   if (!post) return <Loader height={"full"} width={"full"} />
-  if(loading) return <Loader height={"full"} width={"full"} />
+  if (loading) return <Loader height={"full"} width={"full"} />
   return (
     <div className="post md:w-[65%] w-full  my-2">
       <div className='flex h-[5%] w-full  justify-between'>
@@ -108,10 +133,10 @@ const PostBox = ({ post }) => {
           </NavLink>
         </div>
 
-        <div onClick={()=>setOpenPostOptions(true)} className=' flex items-center cursor-pointer'>
+        <div onClick={() => setOpenPostOptions(true)} className=' flex items-center cursor-pointer'>
           <CgMoreO className='h-full size-5' />
         </div>
-        <PostOptions parent={"postbox"} post={post} openPostOptions={openPostOptions} setOpenPostOptions={setOpenPostOptions}/>
+        <PostOptions parent={"postbox"} post={post} openPostOptions={openPostOptions} setOpenPostOptions={setOpenPostOptions} />
       </div>
 
       <div className="postimg w-full h-[80vh] border rounded-xl mt-2 bg-gray-800">
@@ -135,8 +160,8 @@ const PostBox = ({ post }) => {
             <LuSend className='text-xl' />
           </div>
         </div>
-        <div className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
-          <span className="material-symbols-outlined">bookmark</span>
+        <div onClick={Save_post} className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
+          {savepoststate ? <FaBookmark className='text-xl' /> : <FaRegBookmark className='text-xl' />}
         </div>
       </div>
       <div onClick={() => setLikeboxstate(true)} className="font-semibold h-[3%] pl-2 cursor-pointer">{likes?.length} likes</div>

@@ -16,11 +16,13 @@ import { NavLink } from 'react-router-dom';
 import ShowLikesFollowersFollowing from './ShowLikesFollowersFollowing';
 import Commentbox from './Commentbox';
 import PostOptions from './PostOptions';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa6';
 
 
 const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     const userData = useSelector(state => state.auth.userData)
     const [likestate, setLikestate] = useState(false)
+    const [savepoststate, setSavepoststate] = useState(false)
     const [loading, setLoading] = useState(false)
     const [comments, setcomments] = useState([])
     const [likes, setLikes] = useState([])
@@ -43,6 +45,16 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     useEffect(() => {
         setLikes(post?.like)
     }, [post?.like])
+
+    useEffect(() => {
+        if (userData?.save_posts?.indexOf(post?._id) == -1) {
+            setSavepoststate(false)
+        }
+        else {
+            setSavepoststate(true)
+        }
+    }, [userData, post])
+
 
     useEffect(() => {
         setcomments(post?.comments)
@@ -116,6 +128,37 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
             reset()
         }
     }
+
+    const Save_post = async () => {
+        if (loading) return
+        let toastId
+        setLoading(true)
+        try {
+            toastId = toast.loading("saving post...");
+            const res = await axiosInstance.get("/api/v1/posts/savepost/" + post?._id)
+            if (res?.data?.success) {
+                setSavepoststate(!savepoststate)
+                toast.update(toastId, {
+                    render: res?.data?.message || "Post saved successfully",
+                    type: "success",
+                    isLoading: false,
+                    autoClose: 3000,
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            toast.update(toastId, {
+                render: error?.response?.data?.message || "Some error occured Please try again",
+                type: "error",
+                isLoading: false,
+                autoClose: 5000,
+            });
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
 
 
     if (!showpoststate) return null
@@ -207,8 +250,8 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
                                     </div>
 
                                 </div>
-                                <div className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
-                                    <span className="material-symbols-outlined">bookmark</span>
+                                <div onClick={Save_post} className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
+                                    {savepoststate ? <FaBookmark className='text-xl' /> : <FaRegBookmark className='text-xl' />}
                                 </div>
                             </div>
                             <div onClick={() => setLikeboxstate(true)} className="font-semibold cursor-pointer h-[50%] pl-2">{likes?.length} likes</div>

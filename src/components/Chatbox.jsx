@@ -18,12 +18,13 @@ const Chatbox = () => {
     const navigate = useNavigate()
     const messagesRef = useRef(null)
     const bottomRef = useRef(null);
+    const InputRef = useRef(null)
 
     const scrollToBottom = () => {
-    if (bottomRef.current) {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+        if (bottomRef.current) {
+            bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
     const { register, handleSubmit, reset } = useForm()
 
@@ -34,11 +35,17 @@ const Chatbox = () => {
     const [conversation_id, setConversation_id] = useState("")
     const [messages, setMessages] = useState([])
 
-     useLayoutEffect(() => {
-    if (!messages || messages.length === 0) return;
+    useLayoutEffect(() => {
 
-    bottomRef.current?.scrollIntoView({ behavior: "auto" });
-}, [messages]);
+        bottomRef.current?.scrollIntoView({ behavior: "auto" });
+    }, [messages]);
+
+    useEffect(() => {
+     
+         console.log(InputRef.current)
+    
+    }, [])
+    
 
     useEffect(() => {
         socket.emit("direct:join", { peerId: params?.userId })
@@ -61,7 +68,8 @@ const Chatbox = () => {
                         toast.error("could not find conversation or messages")
                     }
                     setMessages(res?.data?.conversation.messages)
-                     scrollToBottom()
+                    setLoading(false)
+                    scrollToBottom()
                 }
                 getMessageRes()
 
@@ -76,11 +84,10 @@ const Chatbox = () => {
     }, [conversation_id, params?.userId])
 
     useEffect(() => {
-        
+setLoading(true)
         async function showuser() {
             try {
                 if (params?.userId) {
-                    setLoading(true)
 
                     const response = await axiosInstance.get("/api/v1/user/getprofile/" + params?.userId)
 
@@ -90,6 +97,9 @@ const Chatbox = () => {
             } catch (error) {
                 console.log(error)
                 toast.error(error?.response?.data?.message || "semething went wrong...")
+                setLoading(false)
+            }
+            finally{
                 setLoading(false)
             }
         }
@@ -115,7 +125,7 @@ const Chatbox = () => {
         }
     }, [params?.userId])
 
-    if (loading) return <Loader height={"full"} width={" w-[100%]"} />
+    if (loading  || !currentuserData?._id) return <Loader height={"full"} width={" w-[100%]"} />
 
     return (
         <div className='  w-[100%]  h-screen  flex'>
@@ -164,13 +174,13 @@ const Chatbox = () => {
 
                         })}
                     </ul>
-                <div ref={bottomRef} ></div>
+                    <div ref={bottomRef} ></div>
                 </div>
-                
+
 
                 <div className=' w-[100%] sm:h-[5%] md:h-[5%] h-[6%] border-[1px] border-gray-400'>
                     <form className='flex  h-full' onSubmit={handleSubmit(sendMessage)}>
-                        <Input parentClass='w-[80%]' type="text"
+                        <Input ref={InputRef} parentClass='w-[80%]' type="text"
                             className="w-full  h-full ml-2 pl-2  text-base rounded focus:outline-none focus:border-none"
                             placeholder="Type a message..."
                             {...register("message", {

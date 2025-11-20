@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import Loader from './Loader2'
-import { get, set } from 'react-hook-form'
 import ShowPost from './ShowPost'
 
 const ProfilePosts = () => {
@@ -15,7 +14,7 @@ const ProfilePosts = () => {
   }
   if (!userData) return <Loader height={"full"} width={"full"} />
 
-  if( userData?.posts?.length == 0 ) return <div className=' mx-auto mt-20 font-bold text-2xl'>no posts yet...</div>
+  if (userData?.posts?.length == 0) return <div className=' mx-auto mt-20 font-bold text-2xl'>no posts yet...</div>
   return (
     <div className='md:w-[75%] sm:w-[75%] w-full grid  grid-cols-3 gap-x-[1px] gap-y-[1px] mt-1 pb-12'>
       {userData?.posts?.map((post, index) => {
