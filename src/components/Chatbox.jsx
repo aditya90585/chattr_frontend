@@ -6,7 +6,7 @@ import axiosInstance from '../features/axioxInstance'
 import { NavLink } from 'react-router-dom'
 import { CgMoreO } from 'react-icons/cg'
 import Button from './Button'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import Input from './Input'
 import { useSelector } from 'react-redux'
 import Loader from './Loader2'
@@ -26,7 +26,7 @@ const Chatbox = () => {
         }
     };
 
-    const { register, handleSubmit, reset } = useForm()
+    const { register, handleSubmit, reset, control } = useForm()
 
     const currentuserData = useSelector(state => state.auth.userData)
 
@@ -41,11 +41,20 @@ const Chatbox = () => {
     }, [messages]);
 
     useEffect(() => {
-     
-         console.log(InputRef.current)
-    
+
+        setTimeout(() => {
+            InputRef.current?.focus()
+        }, 100);
+
     }, [])
-    
+    useEffect(() => {
+
+        setTimeout(() => {
+            InputRef.current?.focus()
+        }, 100);
+
+    }, [messages])
+
 
     useEffect(() => {
         socket.emit("direct:join", { peerId: params?.userId })
@@ -84,7 +93,7 @@ const Chatbox = () => {
     }, [conversation_id, params?.userId])
 
     useEffect(() => {
-setLoading(true)
+        setLoading(true)
         async function showuser() {
             try {
                 if (params?.userId) {
@@ -99,7 +108,7 @@ setLoading(true)
                 toast.error(error?.response?.data?.message || "semething went wrong...")
                 setLoading(false)
             }
-            finally{
+            finally {
                 setLoading(false)
             }
         }
@@ -125,7 +134,7 @@ setLoading(true)
         }
     }, [params?.userId])
 
-    if (loading  || !currentuserData?._id) return <Loader height={"full"} width={" w-[100%]"} />
+    if (loading || !currentuserData?._id) return <Loader height={"full"} width={" w-[100%]"} />
 
     return (
         <div className='  w-[100%]  h-screen  flex'>
@@ -180,13 +189,18 @@ setLoading(true)
 
                 <div className=' w-[100%] sm:h-[5%] md:h-[5%] h-[6%] border-[1px] border-gray-400'>
                     <form className='flex  h-full' onSubmit={handleSubmit(sendMessage)}>
-                        <Input ref={InputRef} parentClass='w-[80%]' type="text"
+
+                        <Input parentClass='w-[80%]' type="text"
                             className="w-full  h-full ml-2 pl-2  text-base rounded focus:outline-none focus:border-none"
                             placeholder="Type a message..."
-                            {...register("message", {
-                                required: true
-                            })}
+                            {...register("message", { required: true })}
+                            ref={(el) => {
+                                register("message").ref(el);  // Give it to RHF
+                                InputRef.current = el;        // Save your custom ref
+                            }}
+
                         />
+
                         <Button type='submit'
                             className='w-[20%] text-[#2D3DD2] font-bold flex items-center justify-center cursor-pointer' >Send</Button>
 

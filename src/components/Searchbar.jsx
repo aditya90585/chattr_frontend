@@ -27,7 +27,19 @@ const Searchbar = ({ searchBarstate, setSearchBarstate }) => {
                 setLoading(false)
             }
         }
-        searchData()
+        function debounce(fn,delay) {
+            console.log(fn)
+            let timerId;
+            return function(...args){
+                console.log(...args,timerId)
+                clearTimeout(timerId);
+                timerId = setTimeout(() => {
+                    fn(...args)
+                }, delay);
+            }
+        }
+      const debouncerun =   debounce(searchData,1000)
+      debouncerun()
     }, [search])
 
     const resetSearch = () => {

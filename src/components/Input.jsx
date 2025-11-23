@@ -1,6 +1,7 @@
 import React, { useId } from 'react'
+import { forwardRef } from 'react'
 
-const Input = ({
+const Input =  forwardRef(({
     type = "text",
     placeholder = "",
     className = "",
@@ -9,7 +10,7 @@ const Input = ({
     parentClass="",
     ...props
 }, ref) => {
-
+ console.log(ref,{...props})
     const id = useId()
     return (
         <div className={`${parentClass}`}>
@@ -31,6 +32,6 @@ const Input = ({
 
         </div>
     )
-}
+})
 
 export default Input
