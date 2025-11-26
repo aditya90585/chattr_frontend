@@ -10,7 +10,6 @@ const Input =  forwardRef(({
     parentClass="",
     ...props
 }, ref) => {
- console.log(ref,{...props})
     const id = useId()
     return (
         <div className={`${parentClass}`}>

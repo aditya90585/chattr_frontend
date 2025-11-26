@@ -39,7 +39,7 @@ export const AuthLayout = ({ children }) => {
 
 
   if (!authStatus) {
-    return <Loader height={"full"} width={"full"} />
+    return <Loader height={"screen"} width={"screen"} />
   }
   return <>
     {children}

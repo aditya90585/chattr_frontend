@@ -8,12 +8,13 @@ import { toast } from 'react-toastify'
 const MessageBar = ({ inMobile }) => {
     const userData = useSelector(state => state?.auth?.userData)
     const [loading, setLoading] = useState(false)
-    const [users, setUsers] = useState([])
+    const [users, setUsers] = useState(null)
 
     useEffect(() => {
-        setLoading(true)
+      
         try {
             async function getprevious_chats() {
+                  setLoading(true)
                 const res = await axiosInstance.get("/api/v1/chat/prevchats")
                 if (res?.data?.success) {
                     setUsers(res?.data?.data)
@@ -25,14 +26,15 @@ const MessageBar = ({ inMobile }) => {
         } catch (error) {
             console.log(error)
             toast.error(error?.response?.data?.message || "cannot get previous chats")
-        }
-        finally {
             setLoading(false)
         }
+
     }, [])
-    if (loading) return <Loader height={"full"} width={"full"} />
-    return (
-        <div className={`h-screen  ${inMobile ? "" : "md:block sm:block hidden"} md:w-[30%] sm:w-[30%] w-[100%]  bg-white border-x`}>
+
+
+    if (loading) return <Loader height={"screen"} className={`${inMobile?"":"hidden"}`} width={`md:w-[30%] sm:w-[30%] ${inMobile?"w-[100%]":""}`} />
+         return (
+        <div className={`h-screen ${inMobile ? "" : "md:block sm:block hidden"} md:w-[30%] sm:w-[30%] w-[100%]  bg-white border-x`}>
             <h1 className='font-bold text-2xl mt-5 ml-5'>{userData?.username}</h1>
             <div className='ml-3 mt-2 w-full relative'>
             </div>
@@ -40,7 +42,7 @@ const MessageBar = ({ inMobile }) => {
             <div className='font-semibold ml-5 mb-3 font-mono text-base'>
                 Messages
             </div>
-            {(users?.length == 0 || loading) && <div className='mx-auto w-fit text-xl text-[#646464] '>no previous chats found or loading...</div>}
+            {(!users) && <div className='mx-auto w-fit text-xl text-[#646464] '>no previous chats found</div>}
            <div className='overflow-y-scroll'>
             {users?.map((user) => {
                 return <MessageSearchResult key={user[0]?._id} user={user[0]} />

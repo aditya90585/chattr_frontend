@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import { IoSearchOutline } from "react-icons/io5";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { BiLoader } from "react-icons/bi";
@@ -8,6 +8,7 @@ import Searchresults from './Searchresults';
 
 const Searchbar = ({ searchBarstate, setSearchBarstate }) => {
     const [search, setSearch] = useState("")
+        const modalRef = useRef();
     const [loading, setLoading] = useState(false)
     const [users, setUsers] = useState([])
 
@@ -45,14 +46,25 @@ const Searchbar = ({ searchBarstate, setSearchBarstate }) => {
     const resetSearch = () => {
         setSearch("")
         setUsers([])
-        setSearchBarstate()
+        setSearchBarstate(false)
     }
 
+    const handleClickOutside = (e) => {
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
+            resetSearch()
+        }
+    };
+    if(!searchBarstate) return null
+
     return (
-        <div className={`md:bottom-0 sm:bottom-0 bottom-11 fixed 
-            ${searchBarstate ? "md:h-screen sm:h-screen h-[80%] md:w-[30%] sm:w-[30%] w-screen md:translate-x-15 sm:translate-x-15 -translate-x-1 transition-transform duration-400 bg-white md:shadow-[2px_4px_7px_black] sm:shadow-[2px_4px_7px_black] md:rounded-tr-2xl md:rounded-br-2xl sm:rounded-tr-2xl sm:rounded-br-2xl md:rounded-tl-none sm:rounded-tl-none rounded-tr-2xl rounded-tl-2xl border"
-                : "md:h-screen sm:h-screen h-[80%] md:w-[30%] sm:w-[30%] w-screen bg-white md:translate-x-[-420px] sm:translate-x-[-420px] translate-x-[0px] md:translate-y-[0px] sm:translate-y-[0px] translate-y-[150%] transition-transform duration-400"}`}>
-            <h1 className='font-semibold text-2xl mt-5 ml-3'>Search</h1>
+        <div
+            className="fixed z-50 inset-0 flex"
+            onClick={handleClickOutside}
+        >
+        <div ref={modalRef} className={`md:bottom-0 sm:bottom-0 bottom-11 absolute 
+            md:h-screen sm:h-screen h-[80%] md:w-[30%] sm:w-[30%] w-screen md:translate-x-15 sm:translate-x-15 translate-x-0  transition-transform duration-400 bg-white md:shadow-[2px_4px_7px_black] sm:shadow-[2px_4px_7px_black] md:rounded-tr-2xl md:rounded-br-2xl sm:rounded-tr-2xl sm:rounded-br-2xl md:rounded-tl-none sm:rounded-tl-none rounded-tr-2xl rounded-tl-2xl border`} >
+              
+              <h1 className='font-semibold text-2xl mt-5 ml-3'>Search</h1>
             <div className='ml-3 mt-10 w-full relative'>
                 {search?.length == 0 && <IoSearchOutline className='absolute top-2.5 left-1 text-xl text-[#8E8E8E]' />}     <input value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -67,6 +79,7 @@ const Searchbar = ({ searchBarstate, setSearchBarstate }) => {
             {users.map((user) => {
                 return <Searchresults key={user?._id} user={user} resetSearch={resetSearch} />
             })}
+        </div>
         </div>
 
     )

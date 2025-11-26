@@ -93,10 +93,10 @@ const Sidebar = ({ messageBarstate, setMessageBarstate }) => {
             "in_mobile": true,
             "auth": true
         },
-        {
-            "logo": <MdOutlineExplore />,
-            "Text": "Explore",
-            "function_name": exploreFunction,
+         {
+            "logo": <GoPlusCircle />,
+            "Text": "Create",
+            "function_name": createFunction,
             "in_mobile": true,
             "auth": true
         },
@@ -104,7 +104,7 @@ const Sidebar = ({ messageBarstate, setMessageBarstate }) => {
             "logo": <IoChatbubbleOutline />,
             "Text": "Messages",
             "function_name": messageFunction,
-            "in_mobile": false,
+            "in_mobile": true,
             "auth": true
         },
         {
@@ -114,13 +114,7 @@ const Sidebar = ({ messageBarstate, setMessageBarstate }) => {
             "in_mobile": false,
             "auth": true
         },
-        {
-            "logo": <GoPlusCircle />,
-            "Text": "Create",
-            "function_name": createFunction,
-            "in_mobile": true,
-            "auth": true
-        },
+       
         {
             "logo": <IoPersonOutline />,
             "Text": "Profile",

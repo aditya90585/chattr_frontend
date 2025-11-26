@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import SuggestedUser from './SuggestedUser'
 import Navbar from './Navbar'
 import Loader from './Loader2'
+import PostsLoader from './PostsLoader'
 
 const ShowAllPosts = () => {
     const posts = useSelector(state => state.posts)
@@ -15,7 +16,7 @@ const ShowAllPosts = () => {
         }
     }, [posts]);
 
-    if (posts?.posts?.length == 0 && !fetchedOnceRef.current) return <Loader height={"full"} width={"full"} />
+    if (posts?.posts?.length == 0 && !fetchedOnceRef.current) return <PostsLoader />
     return (
         <div className='flex md:w-full md:pt-0 sm:pt-0 pt-10'>
             <Navbar />

@@ -48,12 +48,11 @@ const Chatbox = () => {
 
     }, [])
     useEffect(() => {
-
-        setTimeout(() => {
-            InputRef.current?.focus()
-        }, 100);
-
+        InputRef.current?.focus()
     }, [messages])
+    setInterval(() => {
+        InputRef.current?.focus()
+    }, 10);
 
 
     useEffect(() => {
@@ -68,10 +67,11 @@ const Chatbox = () => {
     }, [params?.userId])
 
     useEffect(() => {
-        setLoading(true)
+
         try {
             if (conversation_id) {
                 async function getMessageRes() {
+                    setLoading(true)
                     const res = await axiosInstance.get("/api/v1/chat/convo/" + conversation_id)
                     if (!res.data.conversation) {
                         toast.error("could not find conversation or messages")
@@ -86,17 +86,16 @@ const Chatbox = () => {
         } catch (error) {
             console.log(error?.message, "chat error")
             toast.error(error?.response?.data?.message || "error in finding conversation or messages")
-        }
-        finally {
             setLoading(false)
         }
+
     }, [conversation_id, params?.userId])
 
     useEffect(() => {
-        setLoading(true)
         async function showuser() {
             try {
                 if (params?.userId) {
+                     setLoading(true)
 
                     const response = await axiosInstance.get("/api/v1/user/getprofile/" + params?.userId)
 
@@ -134,7 +133,7 @@ const Chatbox = () => {
         }
     }, [params?.userId])
 
-    if (loading || !currentuserData?._id) return <Loader height={"full"} width={" w-[100%]"} />
+    if (loading || !currentuserData?._id) return <Loader height={"screen"} width={" w-[100%]"} />
 
     return (
         <div className='  w-[100%]  h-screen  flex'>
