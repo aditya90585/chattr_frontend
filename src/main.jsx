@@ -64,23 +64,23 @@ const router = createBrowserRouter([
             path: "account/edit",
             element: (<AuthLayout> <EditProfile /></AuthLayout>)
           },
-          
+
         ]
       },
       {
-            path: "chat/messages",
-            element: (<AuthLayout><Messages /></AuthLayout>),
-            children:[
-              {
-                path:"",
-                element:(<MessageBar inMobile={true} />)
-              },
-              {
-                path:"user/:userId",
-                element:(<Chatbox/>)
-              }
-            ]
+        path: "chat/messages",
+        element: (<AuthLayout><Messages /></AuthLayout>),
+        children: [
+          {
+            path: "",
+            element: (<MessageBar inMobile={true} />)
           },
+          {
+            path: "user/:userId",
+            element: (<Chatbox />)
+          }
+        ]
+      },
     ]
   }
 

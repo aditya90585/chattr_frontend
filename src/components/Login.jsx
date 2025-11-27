@@ -52,7 +52,7 @@ const login = () => {
   }
 
   return (
-    <div className='flex justify-center w-screen items-center'>
+    <div className='flex justify-center w-screen items-center overflow-hidden'>
       <div className='w-[40%] h-screen md:flex hidden items-center justify-center '>
         <img className={` w-full ml-8 rounded-3xl ease-out duration-600 transition `} src="/images/landingpage.png" alt="loginiImage" />
       </div>
