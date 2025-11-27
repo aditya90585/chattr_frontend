@@ -61,7 +61,6 @@ const PostBox = ({ post }) => {
 
   const likeFunction = async () => {
     try {
-      setLoading(true)
       const res = await axiosInstance.get("/api/v1/posts/like/" + post?._id)
       if (res?.data?.success) {
         if (likestate) {
@@ -79,7 +78,7 @@ const PostBox = ({ post }) => {
       }
     } catch (error) {
       console.log(error)
-      toast.error(error?.response?.data?.message || " like failed")
+      toast.error(error?.response?.data?.message || "like failed")
     }
     finally {
       setLoading(false)
