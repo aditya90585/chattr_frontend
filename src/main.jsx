@@ -20,6 +20,7 @@ import EditProfile from './components/EditProfile.jsx'
 import Messages from './components/Messages.jsx'
 import Chatbox from './components/Chatbox.jsx'
 import MessageBar from './components/MessageBar.jsx'
+import NoChats from './components/NoChats.jsx'
 
 const router = createBrowserRouter([
   {
@@ -73,7 +74,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: (<MessageBar inMobile={true} />)
+            element: (<><MessageBar inMobile={true} /> <NoChats/></>)
           },
           {
             path: "user/:userId",
