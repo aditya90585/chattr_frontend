@@ -160,7 +160,8 @@ const PostBox = ({ post }) => {
           </div>
         </div>
         <div onClick={Save_post} className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
-          {savepoststate ? <FaBookmark className='text-xl' /> : <FaRegBookmark className='text-xl' />}
+          {!authStatus ? <FaRegBookmark className='text-xl' /> : savepoststate ? <FaBookmark className='text-xl' /> : <FaRegBookmark className='text-xl' />}
+
         </div>
       </div>
       <div onClick={() => setLikeboxstate(true)} className="font-semibold h-[3%] pl-2 cursor-pointer">{likes?.length} likes</div>
