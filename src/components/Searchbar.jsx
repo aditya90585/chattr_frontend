@@ -12,34 +12,60 @@ const Searchbar = ({ searchBarstate, setSearchBarstate }) => {
     const [loading, setLoading] = useState(false)
     const [users, setUsers] = useState([])
 
-    useEffect(() => {
-        async function searchData() {
-            try {
+    // useEffect(() => {
+    //     const timer = setTimeout(async () => {
 
+    //         try {
+    //             if (search.length > 0) {
+    //                 setLoading(true)
+    //                 const response = await axiosInstance.get("/api/v1/user/search" + "?search=" + search)
+    //                 setUsers(response.data.data)
+    //                 setLoading(false)
+    //             }
+    //         } catch (error) {
+    //             console.log(error, "error")
+    //             toast.error(error?.response?.data?.message || "semething went wrong...")
+    //             setLoading(false)
+    //         }
+
+    //     }, 500);
+    //     // function debounce(fn, delay) {
+    //     //     console.log(fn,"fn")
+    //     //     let timerId;
+    //     //     console.log(timerId,"time1")
+    //     //     return function (...args) {
+    //     //         console.log(args,...args,"args")
+    //     //         clearTimeout(timerId);
+    //     //         timerId = setTimeout(() => {
+    //     //             fn(...args)
+    //     //         }, delay);
+    //     //         console.log(timerId,"time2")
+    //     //     }
+    //     // }
+    //     // const debouncerun = debounce(searchData, 400)
+    //     // debouncerun()
+    //     return () => clearTimeout(timer);
+    // }, [search])
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            try {
                 if (search.length > 0) {
-                    setLoading(true)
-                    const response = await axiosInstance.get("/api/v1/user/search" + "?search=" + search)
-                    setUsers(response.data.data)
-                    setLoading(false)
+                    setLoading(true);
+                    const response = await axiosInstance.get(
+                        "/api/v1/user/search?search=" + search
+                    );
+                    setUsers(response.data.data);
+                    setLoading(false);
                 }
             } catch (error) {
-                console.log(error,"error")
-                toast.error(error?.response?.data?.message || "semething went wrong...")
-                setLoading(false)
+                console.log(error);
+                 toast.error(error?.response?.data?.message || "semething went wrong...")
+                setLoading(false);
             }
-        }
-        function debounce(fn, delay) {
-            let timerId;
-            return function (...args) {
-                clearTimeout(timerId);
-                timerId = setTimeout(() => {
-                    fn(...args)
-                }, delay);
-            }
-        }
-        const debouncerun = debounce(searchData, 400)
-        debouncerun()
-    }, [search])
+        }, 400);
+
+        return () => clearTimeout(timer);
+    }, [search]);
 
     const resetSearch = () => {
         setSearch("")
