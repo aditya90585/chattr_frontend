@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import Input from './Input'
 import Button from './Button'
 import axios from 'axios'
@@ -10,6 +10,8 @@ import { toast, ToastContainer } from "react-toastify"
 import { login } from '../redux/Slices/authSlices'
 import { useDispatch } from 'react-redux'
 import Loader from './Loader2'
+import { useEffect } from 'react'
+import { TbLoader2 } from 'react-icons/tb'
 
 
 
@@ -19,7 +21,8 @@ const Sign = () => {
     const [error, setError] = useState("")
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    const [isusernameuniquestate, setIsusernameuniquestate] = useState(true)
+    const [usernameloading, setUsernameloading] = useState(false)
     const {
         register,
         handleSubmit,
@@ -27,6 +30,36 @@ const Sign = () => {
         formState: { errors },
     } = useForm()
 
+    const usernameValue = String(watch("username"))
+
+    async function checkusernameuniquefn(usernameValue) {
+        if (usernameValue.length <= 0) return
+        try {
+            setUsernameloading(true)
+            const res = await axiosInstance.get(`/api/v1/user/isusernameunique?username=${usernameValue}`)
+
+            if (res.data.success) {
+                setIsusernameuniquestate(true)
+            }
+            else {
+                setIsusernameuniquestate(false)
+            }
+        } catch (error) {
+            setIsusernameuniquestate(false)
+        }
+        finally {
+            setUsernameloading(false)
+        }
+    }
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            checkusernameuniquefn(usernameValue)
+        }, 400);
+        return () => {
+            clearTimeout(timer);
+        };
+
+    }, [usernameValue])
 
     const Signupform = async (data) => {
         try {
@@ -106,23 +139,27 @@ const Sign = () => {
                             )}
                         />
                         {errors.fullname && <span className='text-xs text-red-600'>this field required</span>}
+                        <div className='relative'>
 
-                        <Input
-                            className='h-8 w-75 pl-4 border border-gray-200 mt-2 text-xs font-semibold shadow-sm inset-shadow-sm'
-                            type="text"
-                            placeholder='Username'
-                            {...register("username",
-                                {
-                                    required: "username must be required",
-                                    pattern: {
-                                    value: /^[a-zA-Z0-9_]+$/,
-                                    message: 'only lowercase, uppercase letters, numbers, and underscore are allowed',
-                                    },
-                                }
-                            )}
-                        />
+                            <Input
+                                className='h-8 w-75 pl-4 border border-gray-200 mt-2 text-xs font-semibold shadow-sm inset-shadow-sm'
+                                type="text"
+                                placeholder='Username'
+                                {...register("username",
+                                    {
+                                        required: "username must be required",
+                                        pattern: {
+                                            value: /^[a-zA-Z0-9_]+$/,
+                                            message: 'only lowercase, uppercase letters, numbers, and underscore are allowed',
+                                        },
+                                    }
+                                )}
+                            />
+                            {usernameloading && <TbLoader2 className='text-xs text-gray-500 font-semibold absolute bottom-2 right-4' />}
+                        </div>
 
                         {errors.username && <span className='text-xs text-red-600'>{errors.username.message}</span>}
+                        {usernameValue.length > 0 ? isusernameuniquestate ? <span className='text-xs text-green-400'>username is unique</span> : <span className='text-xs text-red-600'>username is already in use</span> : null}
 
 
                         <Button type='submit'
