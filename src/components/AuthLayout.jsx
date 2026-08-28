@@ -6,6 +6,7 @@ import axiosInstance from "../features/axioxInstance"
 import { useRef } from "react"
 import { login as LoginUser } from "../redux/Slices/authSlices"
 import { ToastContainer, toast } from "react-toastify"
+import LoginRequired from "./LoginRequired"
 
 
 export const AuthLayout = ({ children }) => {
@@ -15,6 +16,11 @@ export const AuthLayout = ({ children }) => {
 
   const userData = useSelector(state => state.auth.userData)
   const authStatus = useSelector(state => state.auth.status)
+
+
+  const [showLoginRequired, setShowLoginRequired] = useState(false);
+
+
 
   useEffect(() => {
     // setLoading(true)
@@ -29,19 +35,40 @@ export const AuthLayout = ({ children }) => {
     if (authStatus === undefined || authStatus === null) return
 
     if (!authStatus) {
-      toast.error("you are not logged in...")
-      navigate("/login")
+      // toast.error("you are not logged in...")
+      setShowLoginRequired(true)
+
     }
 
 
 
-  }, [navigate, authStatus, userData])
+  }, [authStatus, userData, navigate])
+
+  if (showLoginRequired) {
+    return <LoginRequired
+      onClose={() => {
+        setShowLoginRequired(false)
+        navigate("/")
+      }}
+    />
+  }
 
 
   if (!authStatus) {
     return <Loader height={"screen"} width={"screen"} />
   }
+
+
   return <>
     {children}
+    {showLoginRequired && (
+      <LoginRequired
+        onClose={() => {
+          navigate("/login")
+          // setShowLoginRequired(false)
+          // navigate("/login")
+        }}
+      />
+    )}
   </>
 }

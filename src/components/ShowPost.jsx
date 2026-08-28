@@ -17,6 +17,8 @@ import ShowLikesFollowersFollowing from './ShowLikesFollowersFollowing';
 import Commentbox from './Commentbox';
 import PostOptions from './PostOptions';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa6';
+import LoginRequired from './LoginRequired';
+import { Loader2 } from 'lucide-react';
 
 
 const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
@@ -27,8 +29,15 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     const [comments, setcomments] = useState([])
     const [likes, setLikes] = useState([])
     const [likeboxstate, setLikeboxstate] = useState(false)
+    const authStatus = useSelector(state => state.auth.status)
 
     const [openPostOptions, setOpenPostOptions] = useState(false)
+
+    const [showLoginRequired, setShowLoginRequired] = useState(false);
+
+    const [likeLoading, setLikeLoading] = useState(false)
+    const [saveLoading, setSaveLoading] = useState(false)
+    const [commetLoading, setCommentLoading] = useState(false)
 
     useEffect(() => {
         for (let index = 0; index < post?.like?.length; index++) {
@@ -46,6 +55,8 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
         setLikes(post?.like)
     }, [post?.like])
 
+
+
     useEffect(() => {
         if (userData?.save_posts?.indexOf(post?._id) == -1) {
             setSavepoststate(false)
@@ -53,7 +64,8 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
         else {
             setSavepoststate(true)
         }
-    }, [userData, post])
+    }, [userData, authStatus, post])
+
 
 
     useEffect(() => {
@@ -68,7 +80,8 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     };
 
     const likeFunction = async () => {
-        if (loading) return
+        if (likeLoading) return
+        setLikeLoading(true)
         try {
             setLoading(true)
             const res = await axiosInstance.get("/api/v1/posts/like/" + post?._id)
@@ -89,10 +102,13 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
             }
         } catch (error) {
             console.log(error)
-            toast.error(error?.response?.data?.message || " SignUp failed")
+            if (error?.response?.status == 401 || error?.response?.data?.message == "You are not logged In") {
+                setShowLoginRequired(true)
+            }
+            toast.error(error?.response?.data?.message || "Unauthorized")
         }
         finally {
-            setLoading(false)
+            setLikeLoading(false)
         }
     }
 
@@ -106,9 +122,9 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
     } = useForm()
 
     const PostComment = async (data) => {
-        if (loading) return
+        if (commetLoading) return
         try {
-            setLoading(true)
+            setCommentLoading(true)
             const res = await axiosInstance.post("/api/v1/posts/comment", {
                 data,
                 post_id: post?._id
@@ -121,18 +137,21 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
 
         } catch (error) {
             console.log(error)
+            if (error?.response?.status == 401 || error?.response?.data?.message == "You are not logged In") {
+                setShowLoginRequired(true)
+            }
             toast.error(error?.response?.data?.message || "something went wrong")
         }
         finally {
-            setLoading(false)
+            setCommentLoading(false)
             reset()
         }
     }
 
     const Save_post = async () => {
-        if (loading) return
+        if (saveLoading) return
         let toastId
-        setLoading(true)
+        setSaveLoading(true)
         try {
             toastId = toast.loading("saving post...");
             const res = await axiosInstance.get("/api/v1/posts/savepost/" + post?._id)
@@ -147,6 +166,9 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
             }
         } catch (error) {
             console.log(error)
+            if (error?.response?.status == 401 || error?.response?.data?.message == "You are not logged In") {
+                setShowLoginRequired(true)
+            }
             toast.update(toastId, {
                 render: error?.response?.data?.message || "Some error occured Please try again",
                 type: "error",
@@ -155,7 +177,7 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
             });
         }
         finally {
-            setLoading(false)
+            setSaveLoading(false)
         }
     }
 
@@ -241,7 +263,7 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
                                 <div className='flex justify-between items-center'>
                                     <div onClick={likeFunction} className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
                                         {
-                                            likestate ? <IoHeart className='size-7 text-red-600' /> : <IoHeartOutline className='size-7 text-black ' />
+                                            !likeLoading ? likestate ? <IoHeart className='size-7 text-red-600' /> : <IoHeartOutline className='size-7 text-black ' /> : <Loader2 className='size-7 text-gray-400 animate-spin' />
                                         }
 
                                     </div>
@@ -251,7 +273,8 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
 
                                 </div>
                                 <div onClick={Save_post} className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
-                                    {savepoststate ? <FaBookmark className='text-xl' /> : <FaRegBookmark className='text-xl' />}
+                                    {!saveLoading ? !authStatus ? <FaRegBookmark className='text-xl' /> : savepoststate ? <FaBookmark className='text-xl' /> : <FaRegBookmark className='text-xl' /> : <Loader2 className='text-xl animate-spin' />}
+
                                 </div>
                             </div>
                             <div onClick={() => setLikeboxstate(true)} className="font-semibold cursor-pointer h-[50%] pl-2">{likes?.length} likes</div>
@@ -269,14 +292,19 @@ const ShowPost = ({ showpoststate, post, setShowpoststate }) => {
                                     })}
                                 />
                                 <Button type='submit'
-                                    className='w-[20%] text-[#2D3DD2] font-bold flex items-center justify-center cursor-pointer' >Post</Button>
-
+                                    className='w-[20%] text-[#2D3DD2] font-bold flex items-center justify-center cursor-pointer' >{!commetLoading ? "Post" : <Loader2 className='animate-spin' />}</Button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+
             <PostOptions parent={"showpost"} post={post} openPostOptions={openPostOptions} setOpenPostOptions={setOpenPostOptions} />
+            {showLoginRequired && (
+                <LoginRequired
+                    onClose={() => setShowLoginRequired(false)}
+                />
+            )}
         </div>
     )
 }

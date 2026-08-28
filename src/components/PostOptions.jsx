@@ -2,9 +2,10 @@ import React, { useRef, useState, useEffect } from 'react'
 import ShowLikesFollowersFollowing from './ShowLikesFollowersFollowing';
 import ShowPost from './ShowPost';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axiosInstance from '../features/axioxInstance';
 import { toast } from 'react-toastify';
+import { deletePostState } from '../redux/Slices/postSlices';
 
 const PostOptions = ({ openPostOptions, setOpenPostOptions, post, parent }) => {
     const userData = useSelector(state => state.auth.userData)
@@ -16,6 +17,7 @@ const PostOptions = ({ openPostOptions, setOpenPostOptions, post, parent }) => {
     const [authStatus, setAuthStatus] = useState(false)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
 
     useEffect(() => {
@@ -55,6 +57,7 @@ const PostOptions = ({ openPostOptions, setOpenPostOptions, post, parent }) => {
                     autoClose: 3000,
                     closeOnClick: true,
                 });
+                dispatch(deletePostState(res.data.data ))
             }
         }
         catch (error) {

@@ -27,6 +27,7 @@ const Profile = () => {
         }
       } catch (error) {
         console.log(error)
+        
         toast.error(error?.response?.data?.message || "semething went wrong...")
         setLoading(false)
       }

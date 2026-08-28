@@ -12,6 +12,9 @@ import { useDispatch } from 'react-redux'
 import Loader from './Loader2'
 import { useEffect } from 'react'
 import { TbLoader2 } from 'react-icons/tb'
+import Particles from './Particles'
+import CursorGrid from './CursorGrid'
+import { Loader2 } from 'lucide-react'
 
 
 
@@ -84,7 +87,35 @@ const Sign = () => {
     }
     return (
         <div className='flex justify-center w-screen items-center'>
-            <div className='h-screen w-[40%] flex items-center justify-center flex-col'>
+            <div style={{ width: '98%', height: '98%', position: 'absolute' }}>
+                <Particles
+                    particleColors={["#ffffff"]}
+                    particleCount={200}
+                    particleSpread={10}
+                    speed={0.1}
+                    particleBaseSize={100}
+                    moveParticlesOnHover
+                    alphaParticles={false}
+                    disableRotation={false}
+                    pixelRatio={1}
+                />
+                <CursorGrid
+                    cellSize={70}
+                    color="#D946EF"
+                    radius={140}
+                    falloff="smooth"
+                    holdTime={400}
+                    fadeDuration={800}
+                    lineWidth={1.2}
+                    maxOpacity={1}
+                    fillOpacity={0}
+                    gridOpacity={0}
+                    cellRadius={0}
+                    clickPulse
+                    pulseSpeed={600}
+                />
+            </div>
+            <div className='h-screen w-[40%] flex items-center justify-center flex-col relative z-10'>
                 <div className='flex items-center w-40 h-20'>
                     <img className='w-full object-cover' src="/images/chattrLogo.png" alt="LOGO" />
                 </div>
@@ -163,7 +194,7 @@ const Sign = () => {
 
 
                         <Button type='submit'
-                            className='h-9 bg-[#808DFB] w-75 rounded-sm mt-6 font-bold flex items-center justify-center text-white  bg-lightbrown cursor-pointer' >Create account</Button>
+                            className='h-9 bg-[#808DFB] w-75 rounded-sm mt-6 font-bold flex items-center justify-center text-white  bg-lightbrown cursor-pointer' >{!loading?"Create account":<Loader2 className='animate-spin'/>}</Button>
                     </form>
 
                     <div className='w-72 my-8 font-semibold text-xs flex justify-between items-center text-gray-600'>
@@ -177,7 +208,7 @@ const Sign = () => {
 
                 </div>
             </div>
-            <div className='w-[40%] h-screen md:flex hidden items-center justify-center '>
+            <div className='w-[40%] h-screen md:flex hidden items-center justify-center relative z-10'>
                 <img className={` w-full ml-8 rounded-3xl ease-out duration-600 transition `} src="/images/landingpage.png" alt="loginiImage" />
             </div>
         </div>

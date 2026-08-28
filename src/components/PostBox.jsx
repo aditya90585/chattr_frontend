@@ -12,6 +12,8 @@ import { IoChatboxOutline } from 'react-icons/io5';
 import Loader from './Loader2';
 import PostOptions from './PostOptions';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa6';
+import LoginRequired from './LoginRequired';
+import { Loader2 } from 'lucide-react';
 
 
 const PostBox = ({ post }) => {
@@ -23,6 +25,11 @@ const PostBox = ({ post }) => {
   const [likes, setLikes] = useState([])
   const [likeboxstate, setLikeboxstate] = useState(false)
   const [openPostOptions, setOpenPostOptions] = useState(false)
+
+  const [likeLoading, setLikeLoading] = useState(false)
+  const [saveLoading, setSaveLoading] = useState(false)
+
+  const [showLoginRequired, setShowLoginRequired] = useState(false);
 
   useEffect(() => {
     for (let index = 0; index < post?.like?.length; index++) {
@@ -60,6 +67,8 @@ const PostBox = ({ post }) => {
   }
 
   const likeFunction = async () => {
+    if (likeLoading) return
+    setLikeLoading(true)
     try {
       const res = await axiosInstance.get("/api/v1/posts/like/" + post?._id)
       if (res?.data?.success) {
@@ -78,17 +87,20 @@ const PostBox = ({ post }) => {
       }
     } catch (error) {
       console.log(error)
+      if (error?.response?.status == 401 || error?.response?.data?.message == "You are not logged In") {
+        return setShowLoginRequired(true)
+      }
       toast.error(error?.response?.data?.message || "like failed")
     }
     finally {
-      setLoading(false)
+      setLikeLoading(false)
     }
   }
 
   const Save_post = async () => {
-    if (loading) return
+    if (saveLoading) return
     let toastId
-    setLoading(true)
+    setSaveLoading(true)
     try {
       toastId = toast.loading("saving post...");
       const res = await axiosInstance.get("/api/v1/posts/savepost/" + post?._id)
@@ -103,6 +115,9 @@ const PostBox = ({ post }) => {
       }
     } catch (error) {
       console.log(error)
+      if (error?.response?.status == 401 || error?.response?.data?.message == "You are not logged In") {
+        setShowLoginRequired(true)
+      }
       toast.update(toastId, {
         render: error?.response?.data?.message || "Some error occured Please try again",
         type: "error",
@@ -111,7 +126,7 @@ const PostBox = ({ post }) => {
       });
     }
     finally {
-      setLoading(false)
+      setSaveLoading(false)
     }
   }
 
@@ -148,7 +163,7 @@ const PostBox = ({ post }) => {
         <div className='flex justify-between items-center'>
           <div onClick={likeFunction} className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
             {
-              likestate ? <IoHeart className='size-7 text-red-600' /> : <IoHeartOutline className='size-7 text-black ' />
+              !likeLoading ? likestate ? <IoHeart className='size-7 text-red-600' /> : <IoHeartOutline className='size-7 text-black ' /> : <Loader2 className='size-7 text-gray-400 animate-spin' />
             }
 
           </div>
@@ -160,7 +175,7 @@ const PostBox = ({ post }) => {
           </div>
         </div>
         <div onClick={Save_post} className="icon flex items-center justify-center hover:text-[#A8A8A8] p-1 hover:cursor-pointer">
-          {!authStatus ? <FaRegBookmark className='text-xl' /> : savepoststate ? <FaBookmark className='text-xl' /> : <FaRegBookmark className='text-xl' />}
+          {!saveLoading ? !authStatus ? <FaRegBookmark className='text-xl' /> : savepoststate ? <FaBookmark className='text-xl' /> : <FaRegBookmark className='text-xl' /> : <Loader2 className='text-xl animate-spin' />}
 
         </div>
       </div>
@@ -173,6 +188,11 @@ const PostBox = ({ post }) => {
         view all {post?.comments?.length} comments
       </div>
       <ShowPost showpoststate={showpoststate} setShowpoststate={setShowpoststate} post={currentPost} />
+      {showLoginRequired && (
+        <LoginRequired
+          onClose={() => setShowLoginRequired(false)}
+        />
+      )}
     </div>
   )
 }

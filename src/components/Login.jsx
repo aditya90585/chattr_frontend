@@ -9,7 +9,12 @@ import axiosInstance from '../features/axioxInstance'
 import Loader from './Loader2'
 import { ToastContainer, toast } from 'react-toastify'
 import { login as loginUser } from '../redux/Slices/authSlices'
+import SplashCursor from './SplashCursor'
 
+import Particles from './Particles';
+import CursorGrid from './CursorGrid'
+import MagicRings from './MagicRings'
+import { Loader2 } from 'lucide-react'
 const login = () => {
   const [passwordType, setPasswordType] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -25,7 +30,7 @@ const login = () => {
 
 
   const loginform = async (data) => {
-  
+
     try {
       setLoading(true)
       const res = await axiosInstance.post("/api/v1/user/login", {
@@ -33,7 +38,7 @@ const login = () => {
       })
       if (res?.data?.success) {
         dispatch(loginUser({ user: res.data.user }))
-      
+
         navigate("/")
       }
 
@@ -47,19 +52,49 @@ const login = () => {
   }
 
 
-  if (loading) {
-    return <Loader height={"screen"} width={"screen"}/>
-  }
+  // if (loading) {
+  //   return <Loader height={"screen"} width={"screen"} />
+  // }
 
   return (
-    <div className='flex justify-center w-screen items-center overflow-hidden'>
-      <div className='w-[40%] h-screen md:flex hidden items-center justify-center '>
+    <div className='flex justify-center w-screen items-center overflow-hidden '>
+
+      <div style={{ width: '98%', height: '98%', position: 'absolute' }}>
+        <Particles
+          particleColors={["#ffffff"]}
+          particleCount={200}
+          particleSpread={10}
+          speed={0.1}
+          particleBaseSize={100}
+          moveParticlesOnHover
+          alphaParticles={false}
+          disableRotation={false}
+          pixelRatio={1}
+        />
+
+        <CursorGrid
+          cellSize={70}
+          color="#D946EF"
+          radius={140}
+          falloff="smooth"
+          holdTime={400}
+          fadeDuration={800}
+          lineWidth={1.2}
+          maxOpacity={1}
+          fillOpacity={0}
+          gridOpacity={0}
+          cellRadius={0}
+          clickPulse
+          pulseSpeed={600}
+        />
+      </div>
+      <div className='w-[40%] h-screen md:flex hidden items-center justify-center  relative z-10'>
         <img className={` w-full ml-8 rounded-3xl ease-out duration-600 transition `} src="/images/landingpage.png" alt="loginiImage" />
       </div>
-      <div className='h-screen w-[40%] flex items-center justify-center flex-col'>
+      <div className='h-screen w-[40%] flex items-center justify-center flex-col  relative z-10'>
         <div className='flex items-center w-40 h-20'>
-                   <img className='w-full object-cover' src="/images/chattrLogo.png" alt="LOGO" /> 
-                </div>
+          <img className='w-full object-cover' src="/images/chattrLogo.png" alt="LOGO" />
+        </div>
         <div className='flex flex-col items-center justify-center rounded-2xl w-3/4'>
           <form onSubmit={handleSubmit(loginform)} action="">
             <Input
@@ -99,7 +134,7 @@ const login = () => {
             {errors.password && <span className='text-xs text-red-600'>{errors.password.message}</span>}
 
             <Button type='submit'
-              className='h-9 bg-[#808DFB] w-75 rounded-sm mt-6 font-bold flex items-center justify-center text-white  bg-lightbrown cursor-pointer' >Log in</Button>
+              className='h-9 bg-[#808DFB] w-75 rounded-sm mt-6 font-bold flex items-center justify-center text-white  bg-lightbrown cursor-pointer' >{!loading?"Log in":<Loader2 className='animate-spin'/>}</Button>
           </form>
 
           <div className='w-72 my-8 font-semibold text-xs flex justify-between items-center text-gray-600'>

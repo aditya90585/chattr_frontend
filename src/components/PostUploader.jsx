@@ -8,11 +8,14 @@ import axiosInstance from "../features/axioxInstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useGetAllPosts from "../hooks/useGetAllPosts";
+import { useDispatch } from "react-redux";
+import { addPost } from "../redux/Slices/postSlices";
 
 export default function PostUploader({ open, onClose }) {
     const modalRef = useRef();
     const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
     const {
         register,
         handleSubmit,
@@ -64,6 +67,8 @@ export default function PostUploader({ open, onClose }) {
                     isLoading: false,
                     autoClose: 3000,
                 });
+                console.log(res.data)
+                dispatch(addPost(res.data.data))
                 setLoading(false)
                 closeAll()
             }
