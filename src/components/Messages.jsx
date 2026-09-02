@@ -34,10 +34,10 @@ const Messages = () => {
     return (
         <div className='w-full  flex justify-end'>
             <Sidebar messageBarstate={messageBarstate} setMessageBarstate={setMessageBarstate} />
-            <div className='sm:w-[95%] md:w-[95%] w-[100%] flex'>
+            <div className='sm:w-[95%] md:w-[95%] w-[100%] flex overflow-hidden'>
+                <MessageBar inMobile={true}/>
                 <Outlet />
             </div>
-
         </div>
     )
 }

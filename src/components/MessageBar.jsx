@@ -4,6 +4,7 @@ import axiosInstance from '../features/axioxInstance'
 import MessageSearchResult from './MessageSearchResult'
 import Loader from './Loader2'
 import { toast } from 'react-toastify'
+import { Outlet } from 'react-router-dom'
 
 const MessageBar = ({ inMobile }) => {
     const userData = useSelector(state => state?.auth?.userData)
@@ -34,7 +35,7 @@ const MessageBar = ({ inMobile }) => {
 
     if (loading) return <Loader height={"screen"} className={`${inMobile ? "" : "hidden"}`} width={`md:w-[30%] sm:w-[30%] ${inMobile ? "w-[100%]" : ""}`} />
     return (
-        <div className={`h-screen ${inMobile ? "" : "md:block sm:block hidden"} md:w-[30%] sm:w-[30%] w-[100%]  bg-white border-x`}>
+        <div className={`h-screen shrink-0 ${inMobile ? "" : "md:block sm:block hidden"} md:w-[30%] sm:w-[30%] w-[100%] bg-white border-x`}>
             <h1 className='font-bold text-2xl mt-5 ml-5'>{userData?.username}</h1>
             <div className='ml-3 mt-2 w-full relative'>
             </div>
@@ -48,9 +49,6 @@ const MessageBar = ({ inMobile }) => {
                     return <MessageSearchResult key={user[0]?._id} user={user[0]} />
                 })}
             </div>
-
-
-
         </div>
     )
 }

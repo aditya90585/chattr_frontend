@@ -72,14 +72,18 @@ const router = createBrowserRouter([
         path: "chat/messages",
         element: (<AuthLayout><Messages /></AuthLayout>),
         children: [
+
+
           {
             path: "",
-            element: (<><MessageBar inMobile={true} /> <NoChats/></>)
+            element: (<NoChats />)
           },
           {
             path: "user/:userId",
             element: (<Chatbox />)
           }
+
+
         ]
       },
     ]

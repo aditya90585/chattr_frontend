@@ -5,6 +5,7 @@ import SuggestedUser from './SuggestedUser'
 import Navbar from './Navbar'
 import Loader from './Loader2'
 import PostsLoader from './PostsLoader'
+import { Loader2 } from 'lucide-react'
 
 const ShowAllPosts = () => {
     const posts = useSelector(state => state.posts)
@@ -26,7 +27,7 @@ const ShowAllPosts = () => {
                 {posts.posts?.map((post) => {
                     return <PostBox key={post._id} post={post} />
                 })}
-                <div className='loadmore h-20 w-full'>no more posts...</div>
+                <div className='loadmore bg-white md:mb-0 mb-8 relative -z-1 h-20 w-full flex justify-center items-center'><Loader2 className='animate-spin h-full' /></div>
             </div>
             <SuggestedUser />
         </div>
